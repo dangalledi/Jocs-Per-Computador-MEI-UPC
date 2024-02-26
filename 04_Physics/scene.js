@@ -11,7 +11,7 @@ function Scene()
 	this.map = new Tilemap(tilesheet, [16, 16], [4, 2], [0, 0], level01);
 	
 	// Create entities
-	this.player = new Player(224, 0, this.map);
+	this.player = new Player(224,0, this.map);
 	this.bubble = new Bubble(360, 112);
 	this.bubbleActive = true;
 	
