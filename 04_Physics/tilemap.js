@@ -33,14 +33,17 @@ Tilemap.prototype.draw = function ()
 	// Draw the map
 	var tileId;
 	context.imageSmoothingEnabled = false;
-	for(var j=0, pos=0; j<this.map.height; j++)
-		for(var i=0; i<this.map.width; i++, pos++)
-		{
-			tileId = this.map.layers[0].data[pos];
-			if(tileId != 0)
-				context.drawImage(this.tilesheet.img, tilePositions[tileId-1][0], tilePositions[tileId-1][1], blockSize[0], blockSize[1], 
-				                  this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
-		}
+	for(var lay=0; lay < this.map.layers.length; lay++){
+		for(var j=0, pos=0; j<this.map.height; j++)
+			for(var i=0; i<this.map.width; i++, pos++)
+			{
+				tileId = this.map.layers[lay].data[pos];
+				if(tileId != 0)
+					context.drawImage(this.tilesheet.img, tilePositions[tileId-1][0], tilePositions[tileId-1][1], blockSize[0], blockSize[1], 
+									this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+			}
+	}
+	
 }
 
 // Computes if the left part of a sprite collides with the tilemap.

@@ -5,10 +5,10 @@
 function Scene()
 {
 	// Loading texture to use in a TileMap
-	var tilesheet = new Texture("imgs/fondo32bits.png");
+	var tilesheet = new Texture("imgs/fondos32bits.png");
 
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [32, 32], [4, 4], [0, 0], level01);
+	this.map = new Tilemap(tilesheet, [32, 32], [4, 5], [0, 0], level01);
 	
 	// Create entities
 	this.player = new Player(224,0, this.map);
