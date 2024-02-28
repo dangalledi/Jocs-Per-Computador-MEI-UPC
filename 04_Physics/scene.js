@@ -5,7 +5,7 @@
 function Scene()
 {
 	// Loading texture to use in a TileMap
-	var tilesheet = new Texture("imgs/fondos32bits.png");
+	var tilesheet = new Texture("imgs/fondo.png");
 
 	// Create tilemap
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 5], [0, 0], level01);
