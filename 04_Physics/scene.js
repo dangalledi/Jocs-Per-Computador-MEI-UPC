@@ -5,10 +5,10 @@
 function Scene()
 {
 	// Loading texture to use in a TileMap
-	var tilesheet = new Texture("imgs/Bloques-Tubo.png");
-	
+	var tilesheet = new Texture("imgs/fondo32bits.png");
+
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [16, 16], [4, 2], [0, 0], level01);
+	this.map = new Tilemap(tilesheet, [32, 32], [4, 4], [0, 0], level01);
 	
 	// Create entities
 	this.player = new Player(224,0, this.map);
@@ -41,7 +41,7 @@ Scene.prototype.draw = function ()
 	var context = canvas.getContext("2d");
 
 	// Clear background
-	context.fillStyle = "rgb(224, 224, 240)";
+	context.fillStyle = "#87CEEB";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 
 	// Draw tilemap
