@@ -11,7 +11,8 @@ function Scene()
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 5], [0, 0], level01);
 	
 	// Create entities
-	this.player = new Player(224,0, this.map);
+	this.player = new Player(224,352, this.map);
+
 	this.bubble = new Bubble(360, 112);
 
 	this.coin = new Coin(460, 112);
@@ -77,10 +78,13 @@ Scene.prototype.update = function(deltaTime)
 	if(this.player.collisionBox().intersect(this.coin.collisionBox()))
 		this.coinActive = false;
 
-
-	if(this.player.collisionBox().intersectX(this.goomba.collisionBox())){
+	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
 		this.player.die();
 	}
+
+	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
+	// 	this.goomba.die()
+	// }
 
 	// if(this.player.collisionBox().intersectBottom(this.goomba.collisionBox())){
 	// 	this.goomba.die();
