@@ -13,6 +13,7 @@ function Scene()
 	// Create entities
 	this.player = new Player(224,0, this.map);
 	this.bubble = new Bubble(360, 112);
+
 	this.coin = new Coin(460, 112);
 	this.coin2 = new Coin(560, 182);
 	this.coin3 = new Coin(460, 162);
@@ -20,6 +21,7 @@ function Scene()
 	this.coin5 = new Coin(480, 212);
 	this.coin6 = new Coin(410, 112);
 	this.coin7 = new Coin(160, 12);
+
 	this.bubbleActive = true;
 	this.coinActive = true;
 	this.coin2Active = true;
@@ -29,6 +31,7 @@ function Scene()
 	this.coin6Active = true;
 	this.coin7Active = true;
 	
+	this.goomba = new Goomba(704,352);
 	// Store current time
 	this.currentTime = 0
 }
@@ -41,7 +44,9 @@ Scene.prototype.update = function(deltaTime)
 	
 	// Update entities
 	this.player.update(deltaTime);
+
 	this.bubble.update(deltaTime);
+
 	this.coin.update(deltaTime);
 	this.coin2.update(deltaTime);
 	this.coin3.update(deltaTime);
@@ -49,6 +54,9 @@ Scene.prototype.update = function(deltaTime)
 	this.coin5.update(deltaTime);
 	this.coin6.update(deltaTime);
 	this.coin7.update(deltaTime);
+
+	this.goomba.update(deltaTime);
+
 	
 	// Check for collision between entities
 	if(this.player.collisionBox().intersect(this.bubble.collisionBox()))
@@ -68,6 +76,13 @@ Scene.prototype.update = function(deltaTime)
 		this.coin7Active = false;
 	if(this.player.collisionBox().intersect(this.coin.collisionBox()))
 		this.coinActive = false;
+
+
+	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
+		this.goomba.die();
+	}
+
+
 }
 
 Scene.prototype.draw = function ()
@@ -82,6 +97,8 @@ Scene.prototype.draw = function ()
 
 	// Draw tilemap
 	this.map.draw();
+
+	if(this.goomba.active) this.goomba.draw();
 
 	// Draw entities
 	if(this.bubbleActive)
@@ -98,6 +115,7 @@ Scene.prototype.draw = function ()
 		this.coin6.draw();
 	if(this.coin7Active)
 		this.coin7.draw();
+
 	this.player.draw();
 }
 
