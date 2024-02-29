@@ -1,19 +1,32 @@
-const WALK = 0;
-const DIE = 1;
+const WALK_LEFT = 0;
+const WALK_RIGHT = 1;
+const DIE = 2;
 
-function Goomba(x, y)
+function Goomba(x, y, map)
 {
+
+	// Set tilemap for collisions
+	this.map = map;
+	//Direccion inicial de goomba
+	this.direction = "left"
+
+	// Set attributes for vivo y activo
 	this.live = true;
 	this.active = true;
 
+	// Load goomba texture
 	var goomba = new Texture("imgs/goomba.png");
 
 	// Prepare coin sprite & its animation
 	this.sprite = new Sprite(x, y, 32, 32, 2, goomba);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(WALK, [0, 0, 16, 16]);
-	this.sprite.addKeyframe(WALK, [16, 0, 16, 16]);
+	this.sprite.addKeyframe(WALK_LEFT, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(WALK_LEFT, [16, 0, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(WALK_RIGHT, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(WALK_RIGHT, [16, 0, 16, 16]);
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(DIE, [32, 0, 16, 16]);
@@ -30,10 +43,28 @@ Goomba.prototype.die = function die(){
 Goomba.prototype.update = function update(deltaTime)
 {   
     if(this.live){
-        if(this.sprite.currentAnimation != WALK) {
-            this.sprite.setAnimation(WALK);
+        if(this.direction == "left") {
+            if(this.sprite.currentAnimation != WALK_LEFT) {
+                this.sprite.setAnimation(WALK_LEFT);
+            }
+            this.sprite.x -= 0.5;
+            if(this.map.collisionMoveLeft(this.sprite)){
+                this.sprite.x += 0.5;
+                this.direction = "right";
+            }
+        } else {
+            if(this.sprite.currentAnimation != WALK_RIGHT) {
+                this.sprite.setAnimation(WALK_RIGHT);
+            }
+            this.sprite.x += 0.5;
+            if(this.map.collisionMoveRight(this.sprite)){
+                this.sprite.x -= 0.5;
+                this.direction = "left";
+            }
         }
-    } else {
+    } 
+	else {
+		// Die
         if(this.sprite.currentAnimation != DIE) {
             this.sprite.setAnimation(DIE);
         }

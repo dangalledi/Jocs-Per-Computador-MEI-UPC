@@ -31,7 +31,7 @@ function Scene()
 	this.coin6Active = true;
 	this.coin7Active = true;
 	
-	this.goomba = new Goomba(704,352);
+	this.goomba = new Goomba(704,352, this.map);
 	// Store current time
 	this.currentTime = 0
 }
@@ -78,9 +78,13 @@ Scene.prototype.update = function(deltaTime)
 		this.coinActive = false;
 
 
-	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
-		this.goomba.die();
+	if(this.player.collisionBox().intersectX(this.goomba.collisionBox())){
+		this.player.die();
 	}
+
+	// if(this.player.collisionBox().intersectBottom(this.goomba.collisionBox())){
+	// 	this.goomba.die();
+	// }
 
 
 }
