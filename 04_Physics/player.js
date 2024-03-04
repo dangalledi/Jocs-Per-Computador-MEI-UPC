@@ -52,6 +52,7 @@ Player.prototype.update = function (deltaTime) {
 		// Move Mario sprite left/right
 		if (keyboard[37]) // KEY_LEFT
 		{
+			//if jump animacion de salto KEY_LEFT
 			if (this.sprite.currentAnimation != MARIO_WALK_LEFT)
 				this.sprite.setAnimation(MARIO_WALK_LEFT);
 			this.sprite.x -= 2;
@@ -61,6 +62,7 @@ Player.prototype.update = function (deltaTime) {
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
+			//if jump animacion de salto KEY_RIGHT
 			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
 				this.sprite.setAnimation(MARIO_WALK_RIGHT);
 			this.sprite.x += 2;
