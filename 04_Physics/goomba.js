@@ -47,18 +47,18 @@ Goomba.prototype.update = function update(deltaTime)
             if(this.sprite.currentAnimation != WALK_LEFT) {
                 this.sprite.setAnimation(WALK_LEFT);
             }
-            this.sprite.x -= 0.5;
+            this.sprite.x -= 1;
             if(this.map.collisionMoveLeft(this.sprite)){
-                this.sprite.x += 0.5;
+                this.sprite.x += 1;
                 this.direction = "right";
             }
         } else {
             if(this.sprite.currentAnimation != WALK_RIGHT) {
                 this.sprite.setAnimation(WALK_RIGHT);
             }
-            this.sprite.x += 0.5;
+            this.sprite.x += 1;
             if(this.map.collisionMoveRight(this.sprite)){
-                this.sprite.x -= 0.5;
+                this.sprite.x -= 1;
                 this.direction = "left";
             }
         }

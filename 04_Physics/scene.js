@@ -10,7 +10,7 @@ function Scene()
 	// Create tilemap
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], level01);
 	
-	this.brick = new Brick(0,0);
+	this.brick = new Brick(160,224);
 	// Create entities
 	this.player = new Player(224,352, this.map);
 
@@ -89,21 +89,17 @@ Scene.prototype.update = function(deltaTime)
 	if(this.player.collisionBox().intersect(this.interrogation.collisionBox()))
 		this.interrogationActive = false;
 
-	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
-		this.player.die();
+	
+
+	this.player.collisionBox().intersectSide(this.brick.collisionBox())
+	var colision  = this.goomba.collisionBox().intersectSide(this.player.collisionBox());
+	if(!!colision ){
+		if (colision[1] === 'arriba'){
+			this.goomba.die();
+		}else if(this.goomba.active && this.goomba.live){
+			this.player.die();
+		}
 	}
-	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
-	// 	this.goomba.die();
-	// }
-	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
-	// 	this.goomba.die()
-	// }
-
-	// if(this.player.collisionBox().intersectBottom(this.goomba.collisionBox())){
-	// 	this.goomba.die();
-	// }
-
-
 }
 
 Scene.prototype.draw = function ()
