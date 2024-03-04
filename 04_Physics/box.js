@@ -12,9 +12,15 @@ function Box(min_x, min_y, max_x, max_y)
 						[min_x,min_y],[max_x,min_y]	]
 }
 
-
 Box.prototype.intersect = function(box2)
 {
 	return (this.max_x >= box2.min_x) && (box2.max_x >= this.min_x) &&
 	       (this.max_y >= box2.min_y) && (box2.max_y >= this.min_y);
 }
+
+Box.prototype.intersectTop = function(box2){
+	return (this.max_x >= box2.min_x) && (box2.max_x >= this.min_x) &&
+	       (this.max_y >= box2.min_y) && (box2.max_y >= this.min_y);
+}
+
+// 556.5 530 530.5 530

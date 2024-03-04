@@ -89,7 +89,9 @@ Scene.prototype.update = function(deltaTime)
 	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
 		this.player.die();
 	}
-
+	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
+	// 	this.goomba.die();
+	// }
 	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
 	// 	this.goomba.die()
 	// }
