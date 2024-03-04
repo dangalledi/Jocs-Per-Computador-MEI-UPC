@@ -57,7 +57,7 @@ Tilemap.prototype.collisionMoveLeft = function(sprite)
 	
 	for(var y=y0; y<=y1; y++)
 	{
-		if(this.map.layers[1].data[y * this.map.width + x] != 0)
+		if(this.map.layers[2].data[y * this.map.width + x] != 0)
 			return true;
 	}
 	
@@ -75,7 +75,7 @@ Tilemap.prototype.collisionMoveRight = function(sprite)
 	
 	for(var y=y0; y<=y1; y++)
 	{
-		if(this.map.layers[1].data[y * this.map.width + x] != 0)
+		if(this.map.layers[2].data[y * this.map.width + x] != 0)
 			return true;
 	}
 	
@@ -93,7 +93,7 @@ Tilemap.prototype.collisionMoveDown = function(sprite)
 	
 	for(var x=x0; x<=x1; x++)
 	{
-		if(this.map.layers[1].data[y * this.map.width + x] != 0)
+		if(this.map.layers[2].data[y * this.map.width + x] != 0)
 		{
 			sprite.y = y * this.tileSize[1] - sprite.height + this.basePos[1];
 			return true;
@@ -114,7 +114,7 @@ Tilemap.prototype.collisionMoveUp = function(sprite)
     
     for(var x=x0; x<=x1; x++)
     {
-        if(this.map.layers[1].data[y * this.map.width + x] != 0)
+        if(this.map.layers[2].data[y * this.map.width + x] != 0)
         {
             sprite.y = (y + 1) * this.tileSize[1] + this.basePos[1];
             return true;

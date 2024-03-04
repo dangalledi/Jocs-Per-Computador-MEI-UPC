@@ -1,4 +1,3 @@
-var level01 =
 { "compressionlevel":-1,
  "height":14,
  "infinite":false,
@@ -87,7 +86,7 @@ var level01 =
  "tilesets":[
         {
          "firstgid":1,
-         "source":"fondo.tsx"
+         "source":"..\/..\/fondo.tsx"
         }],
  "tilewidth":32,
  "type":"map",

@@ -8,8 +8,9 @@ function Scene()
 	var tilesheet = new Texture("imgs/fondo.png");
 
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [32, 32], [4, 5], [0, 0], level01);
+	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], level01);
 	
+	this.brick = new Brick(0,0);
 	// Create entities
 	this.player = new Player(224,352, this.map);
 
@@ -61,6 +62,8 @@ Scene.prototype.update = function(deltaTime)
 	this.coin7.update(deltaTime);
 
 	this.goomba.update(deltaTime);
+
+	this.brick.update(deltaTime);
 
 	this.interrogation.update(deltaTime);
 	
@@ -137,6 +140,7 @@ Scene.prototype.draw = function ()
 	if(this.interrogationActive)
 		this.interrogation.draw();
 
+	this.brick.draw();
 	this.player.draw();
 }
 
