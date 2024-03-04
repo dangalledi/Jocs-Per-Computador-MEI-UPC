@@ -9,8 +9,9 @@ function Scene()
 
 	// Create tilemap
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], level01);
+
 	
-	this.brick = new Brick(160,224);
+	// this.brick = new Brick(160,224);
 	// Create entities
 	this.player = new Player(224,352, this.map);
 
@@ -63,7 +64,11 @@ Scene.prototype.update = function(deltaTime)
 
 	this.goomba.update(deltaTime);
 
-	this.brick.update(deltaTime);
+	this.map.bricks.forEach(brick => {
+		brick.update(deltaTime);
+	});
+
+	// this.brick.update(deltaTime);
 
 	this.interrogation.update(deltaTime);
 	
@@ -91,7 +96,7 @@ Scene.prototype.update = function(deltaTime)
 
 	
 
-	this.player.collisionBox().intersectSide(this.brick.collisionBox())
+	// this.player.collisionBox().intersectSide(this.brick.collisionBox())
 	var colision  = this.goomba.collisionBox().intersectSide(this.player.collisionBox());
 	if(!!colision ){
 		if (colision[1] === 'arriba'){
@@ -100,6 +105,27 @@ Scene.prototype.update = function(deltaTime)
 			this.player.die();
 		}
 	}
+
+	
+
+	this.map.bricks.forEach(brick => {
+		brick.update(deltaTime);
+	});
+
+	this.map.bricks.forEach(brick => {
+		// console.log(brick.collisionMoveDown(this.player))
+
+		var colisionBrick  = brick.collisionBox().intersectSide(this.player.collisionBox());
+		if(!!colisionBrick ){
+			if (colisionBrick[1] === 'abajo'){
+				// this.brick.sprite.y -= 0.5; 
+				brick.bouncing = true;
+				// this.player.sprite.y -= 2
+			}
+		}
+	});
+
+
 }
 
 Scene.prototype.draw = function ()
@@ -136,8 +162,14 @@ Scene.prototype.draw = function ()
 	if(this.interrogationActive)
 		this.interrogation.draw();
 
-	this.brick.draw();
+	// this.brick.draw();
+
+	this.map.bricks.forEach(brick => {
+		brick.draw();
+	});
+
 	this.player.draw();
+
 }
 
 

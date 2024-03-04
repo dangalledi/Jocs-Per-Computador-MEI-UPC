@@ -9,6 +9,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map)
 	this.map = map
 
 	this.tilesheet = tilesheet;
+	this.bricks = [];
 }
 
 Tilemap.prototype.draw = function ()
@@ -38,12 +39,21 @@ Tilemap.prototype.draw = function ()
 			for(var i=0; i<this.map.width; i++, pos++)
 			{
 				tileId = this.map.layers[lay].data[pos];
-				if(tileId != 0)
-					context.drawImage(this.tilesheet.img, tilePositions[tileId-1][0], tilePositions[tileId-1][1], blockSize[0], blockSize[1], 
-									this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+				if(tileId != 0){
+					// If the tileId matches the given tileId, replace it with a brick
+					if(tileId === 4){
+						var brick = new Brick(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
+						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
+						this.bricks.push(brick); // Add the brick to the bricks array
+					}
+					else{
+						context.drawImage(this.tilesheet.img, tilePositions[tileId-1][0], tilePositions[tileId-1][1], blockSize[0], blockSize[1], 
+										this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j, blockSize[0], blockSize[1]);
+					}
+				}
+			
 			}
 	}
-	
 }
 
 // Computes if the left part of a sprite collides with the tilemap.
@@ -124,3 +134,16 @@ Tilemap.prototype.collisionMoveUp = function(sprite)
     return false;
 }
 
+Tilemap.prototype.replaceTileIdWithBrick = function(tileId, brick)
+{
+    // Iterate over each tile in the map
+    for(var lay=0; lay < this.map.layers.length; lay++){
+        for(var i=0; i<this.map.layers[lay].data.length; i++){
+            // If the tileId matches the given tileId, replace it with a brick
+            if(this.map.layers[lay].data[i] === tileId){
+                this.map.layers[lay].data[i] = 0; // Set the tile to 0 (empty)
+                this.bricks.push(brick); // Add the brick to the bricks array
+            }
+        }
+    }
+}
