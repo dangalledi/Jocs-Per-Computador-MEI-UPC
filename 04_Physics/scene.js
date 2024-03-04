@@ -77,11 +77,12 @@ Scene.prototype.update = function(deltaTime)
 		this.coin7Active = false;
 	if(this.player.collisionBox().intersect(this.coin.collisionBox()))
 		this.coinActive = false;
-
 	if(this.player.collisionBox().intersect(this.goomba.collisionBox())){
 		this.player.die();
 	}
-
+	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
+	// 	this.goomba.die();
+	// }
 	// if(this.goomba.collisionBox().intersectTop(this.player.collisionBox())){
 	// 	this.goomba.die()
 	// }

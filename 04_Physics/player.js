@@ -4,6 +4,8 @@ const MARIO_STAND_RIGHT = 1;
 const MARIO_WALK_LEFT = 2;
 const MARIO_WALK_RIGHT = 3;
 const MARIO_STAND_DIE = 4;
+const MARIO_JUMP_LEFT = 5;
+const MARIO_JUMP_RIGHT = 6;
 
 function Player(x, y, map) {
 	// // Loading spritesheets
@@ -34,6 +36,12 @@ function Player(x, y, map) {
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_STAND_DIE, [32, 16, 16, 16]);
 
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT, [48, 48, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [16, 16, 16, 16]);
+
 	this.sprite.setAnimation(MARIO_STAND_RIGHT);
 
 	// Set tilemap for collisions
@@ -58,7 +66,11 @@ Player.prototype.update = function (deltaTime) {
 			this.sprite.x -= 2;
 			if (this.map.collisionMoveLeft(this.sprite) || this.sprite.x + 2 < 0) //choque con coliciones o salida de pantalla
 				this.sprite.x += 2;
-
+			if(this.bJumping){
+				if(this.sprite.currentAnimation != MARIO_JUMP_LEFT){
+					this.sprite.setAnimation(MARIO_JUMP_LEFT);
+				}
+			}
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
@@ -68,12 +80,22 @@ Player.prototype.update = function (deltaTime) {
 			this.sprite.x += 2;
 			if (this.map.collisionMoveRight(this.sprite) || this.sprite.x + this.sprite.width - 4 > canvas.width) //choque con coliciones o salida de pantalla
 				this.sprite.x -= 2;
+			
+			if(this.bJumping){
+				if(this.sprite.currentAnimation != MARIO_JUMP_RIGHT){
+					this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+				}
+			}
 		}
 		else {
-			if (this.sprite.currentAnimation == MARIO_WALK_LEFT)
-				this.sprite.setAnimation(MARIO_STAND_LEFT);
-			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT)
-				this.sprite.setAnimation(MARIO_STAND_RIGHT);
+			if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT){
+				if(!this.bJumping)
+					this.sprite.setAnimation(MARIO_STAND_LEFT);
+			}
+			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT){
+				if(!this.bJumping)
+					this.sprite.setAnimation(MARIO_STAND_RIGHT);
+			}
 		}
 
 		if (this.bJumping) {
@@ -108,6 +130,10 @@ Player.prototype.update = function (deltaTime) {
 					this.bJumping = true;
 					this.jumpAngle = 0;
 					this.startY = this.sprite.y;
+					if(this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT )
+						this.sprite.setAnimation(MARIO_JUMP_LEFT);
+					if(this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT )
+						this.sprite.setAnimation(MARIO_JUMP_RIGHT);
 				}
 			}
 		}
