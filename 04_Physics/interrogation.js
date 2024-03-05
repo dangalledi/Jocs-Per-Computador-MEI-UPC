@@ -5,6 +5,7 @@ function Interrogation(x, y)
 {
 	var interrogation = new Texture("imgs/interrogation.png");
 
+	this.active = true;
 	// Prepare interrogation sprite & its animation
 	this.sprite = new Sprite(x, y, 32, 32, 3, interrogation);
 
@@ -22,6 +23,11 @@ function Interrogation(x, y)
 
 Interrogation.prototype.update = function update(deltaTime)
 {
+	if(!this.active){
+		if(this.sprite.currentAnimation != INTERROGATION_ENDS){
+			this.sprite.setAnimation(INTERROGATION_ENDS);
+		}
+	}
 	this.sprite.update(deltaTime);
 }
 

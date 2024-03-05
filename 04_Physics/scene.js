@@ -76,6 +76,22 @@ Scene.prototype.update = function(deltaTime)
 		}
 	});
 
+	this.map.interrogation.forEach(interrogation => {
+		var colitionInterrogation  = interrogation.collisionBox().intersectSide(this.player.collisionBox());
+		if(!!colitionInterrogation ){
+			console.log('colitionInterrogation', colitionInterrogation)
+			if (colitionInterrogation[1] === 'abajo'){
+				interrogation.active = false;
+			}
+		}
+	});
+
+	this.map.coin.forEach(coin => {
+		if( coin.collisionBox().intersect(this.player.collisionBox())){
+			coin.active = false;
+		}
+	})
+
 
 }
 
@@ -110,10 +126,11 @@ Scene.prototype.draw = function ()
 		brick.draw();
 	});
 	this.map.interrogation.forEach(interrogation => {
-		interrogation.draw();
+			interrogation.draw();
 	});
 	this.map.coin.forEach(coin => {
-		coin.draw();
+		if(coin.active)
+			coin.draw();
 	});
 
 	this.player.draw();

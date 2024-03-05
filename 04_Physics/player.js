@@ -92,7 +92,30 @@ Player.prototype.update = function (deltaTime) {
 				// this.bJumping = false;
 			}
 		}
+		for(var i = 0; i < this.map.interrogation.length; i++) {
+			var interrogationN = this.map.interrogation[i];
+			var col = this.collisionBox().intersectSide(interrogationN.collisionBox());
 
+			if(!!col && col[1]==='arriba'){
+				this.bJumping = false;
+				this.downBrick =true
+			}
+			if(!!col && col[1]=== 'abajo') {
+				// If the player is colliding with the brick, move the player to the top of the brick
+				this.sprite.y = interrogationN.sprite.y - this.sprite.height;
+				// this.bJumping = false;
+				this.upBrick = true
+			}
+			if(!!col && col[0]==='derecha'){
+				if(!!col && col[1] != 'abajo') this.sprite.x -= 2;
+				// this.bJumping = false;
+			}
+			if(!!col && col[0]==='izquierda'){
+				if(!!col && col[1] != 'abajo') this.sprite.x += 2;
+				// this.bJumping = false;
+			}
+		}
+		
 		if (keyboard[37]) // KEY_LEFT
 		{
 			if (this.sprite.currentAnimation != MARIO_WALK_LEFT)
