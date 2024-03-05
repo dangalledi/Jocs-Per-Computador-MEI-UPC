@@ -10,6 +10,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map)
 
 	this.tilesheet = tilesheet;
 	this.bricks = [];
+	this.interrogation = [];
 }
 
 Tilemap.prototype.draw = function ()
@@ -45,6 +46,11 @@ Tilemap.prototype.draw = function ()
 						var brick = new Brick(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
 						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
 						this.bricks.push(brick); // Add the brick to the bricks array
+					}
+					if(tileId === 22){
+						var interrogation = new Interrogation(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
+						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
+						this.interrogation.push(interrogation); // Add the brick to the bricks array
 					}
 					else{
 						context.drawImage(this.tilesheet.img, tilePositions[tileId-1][0], tilePositions[tileId-1][1], blockSize[0], blockSize[1], 

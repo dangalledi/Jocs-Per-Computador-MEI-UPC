@@ -1,4 +1,5 @@
-
+const INTERROGATION_ACTIVE = 0;
+const INTERROGATION_ENDS = 1;
 
 function Interrogation(x, y)
 {
@@ -8,13 +9,17 @@ function Interrogation(x, y)
 	this.sprite = new Sprite(x, y, 32, 32, 3, interrogation);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(0, [0, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [16, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [32, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [48, 0, 16, 16]);
+	this.sprite.addKeyframe(INTERROGATION_ACTIVE, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(INTERROGATION_ACTIVE, [16, 0, 16, 16]);
+	this.sprite.addKeyframe(INTERROGATION_ACTIVE, [32, 0, 16, 16]);
+	this.sprite.addKeyframe(INTERROGATION_ACTIVE, [48, 0, 16, 16]);
+	
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(INTERROGATION_ENDS, [64, 0, 16, 16]);
+
+	this.sprite.setAnimation(INTERROGATION_ACTIVE);
 }
 // ahi esta el tile de despues de haberle pegado 
-// this.sprite.addKeyframe(0, [64, 0, 16, 16]);
 
 Interrogation.prototype.update = function update(deltaTime)
 {

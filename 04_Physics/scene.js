@@ -25,8 +25,6 @@ function Scene()
 	this.coin6 = new Coin(410, 249);
 	this.coin7 = new Coin(160, 249);
 	
-	this.interrogation = new Interrogation(224,288);
-
 	this.bubbleActive = true;
 	this.coinActive = true;
 	this.coin2Active = true;
@@ -35,8 +33,6 @@ function Scene()
 	this.coin5Active = true;
 	this.coin6Active = true;
 	this.coin7Active = true;
-	
-	this.interrogationActive = true;
 	
 	this.goomba = new Goomba(704,352, this.map);
 	// Store current time
@@ -67,11 +63,12 @@ Scene.prototype.update = function(deltaTime)
 	this.map.bricks.forEach(brick => {
 		brick.update(deltaTime);
 	});
+	this.map.interrogation.forEach(interrogation => {
+		interrogation.update(deltaTime);
+	});
 
 	// this.brick.update(deltaTime);
 
-	this.interrogation.update(deltaTime);
-	
 	// Check for collision between entities
 	if(this.player.collisionBox().intersect(this.bubble.collisionBox()))
 		this.bubbleActive = false;
@@ -91,10 +88,6 @@ Scene.prototype.update = function(deltaTime)
 	if(this.player.collisionBox().intersect(this.coin.collisionBox()))
 		this.coinActive = false;
 
-	if(this.player.collisionBox().intersect(this.interrogation.collisionBox()))
-		this.interrogationActive = false;
-
-	
 
 	// this.player.collisionBox().intersectSide(this.brick.collisionBox())
 	var colision  = this.goomba.collisionBox().intersectSide(this.player.collisionBox());
@@ -105,12 +98,6 @@ Scene.prototype.update = function(deltaTime)
 			this.player.die();
 		}
 	}
-
-	
-
-	this.map.bricks.forEach(brick => {
-		brick.update(deltaTime);
-	});
 
 	this.map.bricks.forEach(brick => {
 		// console.log(brick.collisionMoveDown(this.player))
@@ -169,13 +156,13 @@ Scene.prototype.draw = function ()
 	if(this.coin7Active)
 		this.coin7.draw();
 
-	if(this.interrogationActive)
-		this.interrogation.draw();
-
 	// this.brick.draw();
 
 	this.map.bricks.forEach(brick => {
 		brick.draw();
+	});
+	this.map.interrogation.forEach(interrogation => {
+		interrogation.draw();
 	});
 
 	this.player.draw();
