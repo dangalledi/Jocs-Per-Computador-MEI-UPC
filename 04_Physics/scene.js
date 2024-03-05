@@ -99,6 +99,15 @@ Scene.prototype.draw = function ()
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
+	// Calculate the position of the camera. The camera follows the player, staying a certain distance away.
+    var cameraX = this.player.sprite.x - canvas.width / 2;
+    cameraX = Math.max(0, cameraX); // Don't go beyond the left edge of the map
+    cameraX = Math.min(this.map.map.width*32 - canvas.width, cameraX); // Don't go beyond the right edge of the map
+
+    // Apply transformation to context
+    context.save();
+    context.translate(-cameraX, 0);
+
 	// console.log(this.player.sprite.x + this.player.sprite.width - 4 > canvas.width , 'this.player.sprite.x + this.player.sprite.width - 4 > canvas.width ')
 	// console.log(-this.player.sprite.x + canvas.width)
 	// console.log(this.player.sprite.x > this.player.playerLastX, '')
@@ -111,32 +120,25 @@ Scene.prototype.draw = function ()
 	
 	// Clear background
 	context.fillStyle = "#87CEEB";
-	context.fillRect(0, 0, canvas.width, canvas.height);
+	context.fillRect(0, 0, this.map.map.width*32, canvas.height);
 
 	// Draw tilemap
 	this.map.draw();
 
 	if(this.goomba.active) this.goomba.draw();
 	
-	// this.brick.draw();
-
-	this.map.bricks.forEach(brick => {
-		brick.draw();
-	});
-	this.map.interrogation.forEach(interrogation => {
-			interrogation.draw();
-	});
-	this.map.coin.forEach(coin => {
-		if(coin.active)
-			coin.draw();
-	});
-
+	this.map.bricks.forEach(brick => {	brick.draw();	});
+	this.map.interrogation.forEach(interrogation => {	interrogation.draw();	});
+	this.map.coin.forEach(coin => {	if(coin.active)	coin.draw();	});
 	this.player.draw();
 
 	// // If the transformation was applied, restore the context
     // if (this.player.sprite.x + this.player.sprite.width - 4 > 2 *canvas.width/3 && this.player.sprite.x > this.player.playerLastX) {
     //     context.restore();
     // }
+
+	context.restore();
+
 
 }
 

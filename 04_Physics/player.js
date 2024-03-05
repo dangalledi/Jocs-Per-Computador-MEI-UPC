@@ -134,7 +134,7 @@ Player.prototype.update = function (deltaTime) {
 			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
 				this.sprite.setAnimation(MARIO_WALK_RIGHT);
 			this.sprite.x += 2;
-			if (this.map.collisionMoveRight(this.sprite)  ||this.downBrick|| this.sprite.x + this.sprite.width - 4 > canvas.width) //choque con coliciones o salida de pantalla
+			if (this.map.collisionMoveRight(this.sprite)  ||this.downBrick) //choque con coliciones o salida de pantalla
 				this.sprite.x -= 2;this.downBrick = false;
 			
 			if(this.bJumping){
