@@ -1,11 +1,15 @@
 const INTERROGATION_ACTIVE = 0;
 const INTERROGATION_ENDS = 1;
 
-function Interrogation(x, y)
+function InterrogationBox(x, y)
 {
 	var interrogation = new Texture("imgs/interrogation.png");
 
 	this.active = true;
+	this.originalY = y;
+	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
+	this.bouncing = false;
+
 	// Prepare interrogation sprite & its animation
 	this.sprite = new Sprite(x, y, 32, 32, 3, interrogation);
 
@@ -21,22 +25,44 @@ function Interrogation(x, y)
 	this.sprite.setAnimation(INTERROGATION_ACTIVE);
 }
 
-Interrogation.prototype.update = function update(deltaTime)
+InterrogationBox.prototype.update = function update(deltaTime)
 {
 	if(!this.active){
 		if(this.sprite.currentAnimation != INTERROGATION_ENDS){
 			this.sprite.setAnimation(INTERROGATION_ENDS);
 		}
 	}
+	if (this.bouncing && this.active) {
+		if (this.goingUp) {
+			if (this.sprite.y > this.originalY - this.maxBounceHeight) {
+				this.sprite.y -= 2;
+			} else {
+				this.goingUp = false;
+			}
+		} else {
+			this.sprite.y += 2;
+			if (this.sprite.y >= this.originalY) {
+				this.sprite.y = this.originalY;
+				this.bouncing = false;
+				this.goingUp = true;
+			}
+		}
+	}
 	this.sprite.update(deltaTime);
 }
 
-Interrogation.prototype.draw = function draw()
+InterrogationBox.prototype.die = function die(){
+	setTimeout(() => {
+		this.active = false;
+	}, 400);
+}
+
+InterrogationBox.prototype.draw = function draw()
 {
 	this.sprite.draw();
 }
 
-Interrogation.prototype.collisionBox = function()
+InterrogationBox.prototype.collisionBox = function()
 {
 	var box = new Box(this.sprite.x + 2, this.sprite.y + 2, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height - 4);
 	

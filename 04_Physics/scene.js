@@ -78,11 +78,9 @@ Scene.prototype.update = function(deltaTime)
 
 	this.map.interrogation.forEach(interrogation => {
 		var colitionInterrogation  = interrogation.collisionBox().intersectSide(this.player.collisionBox());
-		if(!!colitionInterrogation ){
-			console.log('colitionInterrogation', colitionInterrogation)
-			if (colitionInterrogation[1] === 'abajo'){
-				interrogation.active = false;
-			}
+		if(!!colitionInterrogation && colitionInterrogation[1] === 'abajo'){
+			interrogation.die();
+			interrogation.bouncing = true;
 		}
 	});
 

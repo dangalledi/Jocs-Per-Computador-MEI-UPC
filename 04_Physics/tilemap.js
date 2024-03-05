@@ -49,7 +49,7 @@ Tilemap.prototype.draw = function ()
 						this.bricks.push(brick); // Add the brick to the bricks array
 					}
 					if(tileId === 22){
-						var interrogation = new Interrogation(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
+						var interrogation = new InterrogationBox(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
 						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
 						this.interrogation.push(interrogation); // Add the brick to the bricks array
 					}

@@ -10,7 +10,7 @@ function Brick(x, y) {
 	this.sprite.addKeyframe(0, [96, 0, 32, 32]);
 
 	this.originalY = y;
-	this.maxBounceHeight = 26; // Change this to the maximum bounce height you want
+	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
 	this.bouncing = false;
 }
 
