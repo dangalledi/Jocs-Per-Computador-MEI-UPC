@@ -165,6 +165,7 @@ Player.prototype.update = function (deltaTime) {
 				}
 			}
 			if(this.upBrick){
+				this.upBrick = false
 				// Check arrow up key. If pressed, jump.
 				if (keyboard[32]) {
 					this.bJumping = true;

@@ -134,6 +134,16 @@ Scene.prototype.draw = function ()
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
 
+	// console.log(this.player.sprite.x + this.player.sprite.width - 4 > canvas.width , 'this.player.sprite.x + this.player.sprite.width - 4 > canvas.width ')
+	// console.log(-this.player.sprite.x + canvas.width)
+	// console.log(this.player.sprite.x > this.player.playerLastX, '')
+	// Check if the player is near the right edge of the canvas
+	// if(this.player.sprite.x + this.player.sprite.width - 4 > 2 *canvas.width/3 && this.player.sprite.x > this.player.playerLastX){
+    //     // Apply transformation to context
+    //     context.save();
+    //     context.translate(-this.player.sprite.x + 2 *canvas.width/3, 0);
+    // }
+	
 	// Clear background
 	context.fillStyle = "#87CEEB";
 	context.fillRect(0, 0, canvas.width, canvas.height);
@@ -169,6 +179,11 @@ Scene.prototype.draw = function ()
 	});
 
 	this.player.draw();
+
+	// // If the transformation was applied, restore the context
+    // if (this.player.sprite.x + this.player.sprite.width - 4 > 2 *canvas.width/3 && this.player.sprite.x > this.player.playerLastX) {
+    //     context.restore();
+    // }
 
 }
 
