@@ -15,6 +15,8 @@ function Scene()
 	this.goomba = new Goomba(704,352, this.map);
 	// Store current time
 	this.currentTime = 0
+	//max Camara
+	this.maxCameraX = 0;
 }
 
 
@@ -43,8 +45,6 @@ Scene.prototype.update = function(deltaTime)
 	}
 
 	this.map.bricks.forEach(brick => {
-		// console.log(brick.collisionMoveDown(this.player))
-
 		var colisionBrick  = brick.collisionBox().intersectSide(this.player.collisionBox());
 		if(!!colisionBrick ){
 			if (colisionBrick[1] === 'abajo'){
@@ -68,8 +68,6 @@ Scene.prototype.update = function(deltaTime)
 			coin.active = false;
 		}
 	})
-
-
 }
 
 Scene.prototype.draw = function ()
@@ -82,6 +80,11 @@ Scene.prototype.draw = function ()
     var cameraX = this.player.sprite.x - canvas.width / 2;
     cameraX = Math.max(0, cameraX); // Don't go beyond the left edge of the map
     cameraX = Math.min(this.map.map.width*32 - canvas.width, cameraX); // Don't go beyond the right edge of the map
+
+    // Ensure the camera never moves back
+    cameraX = Math.max(cameraX, this.maxCameraX);
+
+    this.maxCameraX = cameraX;
 
     // Apply transformation to context
     context.save();

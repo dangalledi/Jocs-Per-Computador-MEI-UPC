@@ -58,16 +58,8 @@ function Player(x, y, map) {
 
 
 Player.prototype.update = function (deltaTime) {
-	var canvas = document.getElementById("game-layer");
 
 	if (this.live) {
-		// Move Mario sprite left/right
-		// var colicionT = this.map.bricks.forEach(brick => {
-		// 	var col = this.player.collisionBox().intersectSide(brick.collisionBox());
-		// 	if(col[1]=== 'arriba'){
-				
-		// 	}
-		// });
 
 		for(var i = 0; i < this.map.bricks.length; i++) {
 			var brick = this.map.bricks[i];
