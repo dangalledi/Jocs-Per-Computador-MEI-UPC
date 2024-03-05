@@ -1,4 +1,4 @@
-
+const COIN_ACTIVE = 0;
 
 function Coin(x, y)
 {
@@ -8,10 +8,12 @@ function Coin(x, y)
 	this.sprite = new Sprite(x, y, 32, 32, 3, coin);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(0, [0, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [16, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [32, 0, 16, 16]);
-	this.sprite.addKeyframe(0, [48, 0, 16, 16]);
+	this.sprite.addKeyframe(COIN_ACTIVE, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(COIN_ACTIVE, [16, 0, 16, 16]);
+	this.sprite.addKeyframe(COIN_ACTIVE, [32, 0, 16, 16]);
+	this.sprite.addKeyframe(COIN_ACTIVE, [48, 0, 16, 16]);
+
+	this.sprite.setAnimation(COIN_ACTIVE);
 }
 
 

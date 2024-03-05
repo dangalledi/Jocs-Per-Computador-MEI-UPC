@@ -19,7 +19,6 @@ function Interrogation(x, y)
 
 	this.sprite.setAnimation(INTERROGATION_ACTIVE);
 }
-// ahi esta el tile de despues de haberle pegado 
 
 Interrogation.prototype.update = function update(deltaTime)
 {

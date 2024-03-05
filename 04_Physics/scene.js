@@ -16,23 +16,8 @@ function Scene()
 	this.player = new Player(224,352, this.map);
 
 	this.bubble = new Bubble(360, 112);
-
-	this.coin = new Coin(500, 154);
-	this.coin2 = new Coin(470, 154);
-	this.coin3 = new Coin(440, 154);
-	this.coin4 = new Coin(260, 154);
-	this.coin5 = new Coin(480, 249);
-	this.coin6 = new Coin(410, 249);
-	this.coin7 = new Coin(160, 249);
 	
 	this.bubbleActive = true;
-	this.coinActive = true;
-	this.coin2Active = true;
-	this.coin3Active = true;
-	this.coin4Active = true;
-	this.coin5Active = true;
-	this.coin6Active = true;
-	this.coin7Active = true;
 	
 	this.goomba = new Goomba(704,352, this.map);
 	// Store current time
@@ -50,14 +35,6 @@ Scene.prototype.update = function(deltaTime)
 
 	this.bubble.update(deltaTime);
 
-	this.coin.update(deltaTime);
-	this.coin2.update(deltaTime);
-	this.coin3.update(deltaTime);
-	this.coin4.update(deltaTime);
-	this.coin5.update(deltaTime);
-	this.coin6.update(deltaTime);
-	this.coin7.update(deltaTime);
-
 	this.goomba.update(deltaTime);
 
 	this.map.bricks.forEach(brick => {
@@ -66,6 +43,9 @@ Scene.prototype.update = function(deltaTime)
 	this.map.interrogation.forEach(interrogation => {
 		interrogation.update(deltaTime);
 	});
+	this.map.coin.forEach(coin => {
+		coin.update(deltaTime);
+	});
 
 	// this.brick.update(deltaTime);
 
@@ -73,22 +53,6 @@ Scene.prototype.update = function(deltaTime)
 	if(this.player.collisionBox().intersect(this.bubble.collisionBox()))
 		this.bubbleActive = false;
 	
-	if(this.player.collisionBox().intersect(this.coin2.collisionBox()))
-		this.coin2Active = false;
-	if(this.player.collisionBox().intersect(this.coin3.collisionBox()))
-		this.coin3Active = false;
-	if(this.player.collisionBox().intersect(this.coin4.collisionBox()))
-		this.coin4Active = false;
-	if(this.player.collisionBox().intersect(this.coin5.collisionBox()))
-		this.coin5Active = false;
-	if(this.player.collisionBox().intersect(this.coin6.collisionBox()))
-		this.coin6Active = false;
-	if(this.player.collisionBox().intersect(this.coin7.collisionBox()))
-		this.coin7Active = false;
-	if(this.player.collisionBox().intersect(this.coin.collisionBox()))
-		this.coinActive = false;
-
-
 	// this.player.collisionBox().intersectSide(this.brick.collisionBox())
 	var colision  = this.goomba.collisionBox().intersectSide(this.player.collisionBox());
 	if(!!colision ){
@@ -139,23 +103,7 @@ Scene.prototype.draw = function ()
 	this.map.draw();
 
 	if(this.goomba.active) this.goomba.draw();
-
-	// Draw entities
-	if(this.bubbleActive)
-		this.bubble.draw();
-	if(this.coin2Active)
-		this.coin2.draw();
-	if(this.coin3Active)
-		this.coin3.draw();
-	if(this.coin4Active)
-		this.coin4.draw();
-	if(this.coin5Active)
-		this.coin5.draw();
-	if(this.coin6Active)
-		this.coin6.draw();
-	if(this.coin7Active)
-		this.coin7.draw();
-
+	
 	// this.brick.draw();
 
 	this.map.bricks.forEach(brick => {
@@ -163,6 +111,9 @@ Scene.prototype.draw = function ()
 	});
 	this.map.interrogation.forEach(interrogation => {
 		interrogation.draw();
+	});
+	this.map.coin.forEach(coin => {
+		coin.draw();
 	});
 
 	this.player.draw();
