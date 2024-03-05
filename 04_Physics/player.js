@@ -61,52 +61,8 @@ Player.prototype.update = function (deltaTime) {
 
 	if (this.live) {
 
-		for(var i = 0; i < this.map.bricks.length; i++) {
-			var brick = this.map.bricks[i];
-			var col = this.collisionBox().intersectSide(brick.collisionBox());
-
-			if(!!col && col[1]==='arriba'){
-				this.bJumping = false;
-				this.downBrick =true
-			}
-			if(!!col && col[1]=== 'abajo') {
-				// If the player is colliding with the brick, move the player to the top of the brick
-				this.sprite.y = brick.sprite.y - this.sprite.height;
-				// this.bJumping = false;
-				this.upBrick = true
-			}
-			if(!!col && col[0]==='derecha'){
-				if(!!col && col[1] != 'abajo') this.sprite.x -= 2;
-				// this.bJumping = false;
-			}
-			if(!!col && col[0]==='izquierda'){
-				if(!!col && col[1] != 'abajo') this.sprite.x += 2;
-				// this.bJumping = false;
-			}
-		}
-		for(var i = 0; i < this.map.interrogation.length; i++) {
-			var interrogationN = this.map.interrogation[i];
-			var col = this.collisionBox().intersectSide(interrogationN.collisionBox());
-
-			if(!!col && col[1]==='arriba'){
-				this.bJumping = false;
-				this.downBrick =true
-			}
-			if(!!col && col[1]=== 'abajo') {
-				// If the player is colliding with the brick, move the player to the top of the brick
-				this.sprite.y = interrogationN.sprite.y - this.sprite.height;
-				// this.bJumping = false;
-				this.upBrick = true
-			}
-			if(!!col && col[0]==='derecha'){
-				if(!!col && col[1] != 'abajo') this.sprite.x -= 2;
-				// this.bJumping = false;
-			}
-			if(!!col && col[0]==='izquierda'){
-				if(!!col && col[1] != 'abajo') this.sprite.x += 2;
-				// this.bJumping = false;
-			}
-		}
+		this.controlFormaBrick(this.map.bricks);
+		this.controlFormaBrick(this.map.interrogation);
 		
 		if (keyboard[37]) // KEY_LEFT
 		{
@@ -166,31 +122,8 @@ Player.prototype.update = function (deltaTime) {
 			// Move Bub so that it is affected by gravity
 			this.sprite.y += 2;
 			
-			if (this.map.collisionMoveDown(this.sprite)) {
-				this.upBrick = false
-				// Check arrow up key. If pressed, jump.
-				if (keyboard[32]) {
-					this.bJumping = true;
-					this.jumpAngle = 0;
-					this.startY = this.sprite.y;
-					if(this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT )
-						this.sprite.setAnimation(MARIO_JUMP_LEFT);
-					if(this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT )
-						this.sprite.setAnimation(MARIO_JUMP_RIGHT);
-				}
-			}
-			if(this.upBrick){
-				this.upBrick = false
-				// Check arrow up key. If pressed, jump.
-				if (keyboard[32]) {
-					this.bJumping = true;
-					this.jumpAngle = 0;
-					this.startY = this.sprite.y;
-					if(this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT )
-						this.sprite.setAnimation(MARIO_JUMP_LEFT);
-					if(this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT )
-						this.sprite.setAnimation(MARIO_JUMP_RIGHT);
-				}
+			if (this.map.collisionMoveDown(this.sprite) || this.upBrick) {
+				this.jump();
 			}
 		}
 	}
@@ -217,6 +150,42 @@ Player.prototype.collisionBox = function () {
 	return box;
 }
 
+Player.prototype.jump = function(){
+	this.upBrick = false
+		// Check arrow up key. If pressed, jump.
+		if (keyboard[32]) {
+			this.bJumping = true;
+			this.jumpAngle = 0;
+			this.startY = this.sprite.y;
+			if(this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT )
+				this.sprite.setAnimation(MARIO_JUMP_LEFT);
+			if(this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT )
+				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+		}
+}
 
+Player.prototype.controlFormaBrick = function(ladrillos){
+	for(var i = 0; i < ladrillos.length; i++) {
+		var brick = ladrillos[i];
+		var col = this.collisionBox().intersectSide(brick.collisionBox());
 
-
+		if(!!col && col[1]==='arriba'){
+			this.bJumping = false;
+			this.downBrick =true
+		}
+		if(!!col && col[1]=== 'abajo') {
+			// If the player is colliding with the brick, move the player to the top of the brick
+			this.sprite.y = brick.sprite.y - this.sprite.height;
+			// this.bJumping = false;
+			this.upBrick = true
+		}
+		if(!!col && col[0]==='derecha'){
+			if(!!col && col[1] != 'abajo') this.sprite.x -= 2;
+			// this.bJumping = false;
+		}
+		if(!!col && col[0]==='izquierda'){
+			if(!!col && col[1] != 'abajo') this.sprite.x += 2;
+			// this.bJumping = false;
+		}
+	}
+}

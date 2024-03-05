@@ -13,6 +13,7 @@ function Goomba(x, y, map)
 	// Set attributes for vivo y activo
 	this.live = true;
 	this.active = true;
+	this.move = false;
 
 	// Load goomba texture
 	var goomba = new Texture("imgs/goomba.png");
@@ -43,25 +44,27 @@ Goomba.prototype.die = function die(){
 Goomba.prototype.update = function update(deltaTime)
 {   
     if(this.live){
-        if(this.direction == "left") {
-            if(this.sprite.currentAnimation != WALK_LEFT) {
-                this.sprite.setAnimation(WALK_LEFT);
-            }
-            this.sprite.x -= 1;
-            if(this.map.collisionMoveLeft(this.sprite)){
-                this.sprite.x += 1;
-                this.direction = "right";
-            }
-        } else {
-            if(this.sprite.currentAnimation != WALK_RIGHT) {
-                this.sprite.setAnimation(WALK_RIGHT);
-            }
-            this.sprite.x += 1;
-            if(this.map.collisionMoveRight(this.sprite)){
-                this.sprite.x -= 1;
-                this.direction = "left";
-            }
-        }
+		if(this.move){
+			if(this.direction == "left") {
+				if(this.sprite.currentAnimation != WALK_LEFT) {
+					this.sprite.setAnimation(WALK_LEFT);
+				}
+				this.sprite.x -= 1;
+				if(this.map.collisionMoveLeft(this.sprite)){
+					this.sprite.x += 1;
+					this.direction = "right";
+				}
+			} else {
+				if(this.sprite.currentAnimation != WALK_RIGHT) {
+					this.sprite.setAnimation(WALK_RIGHT);
+				}
+				this.sprite.x += 1;
+				if(this.map.collisionMoveRight(this.sprite)){
+					this.sprite.x -= 1;
+					this.direction = "left";
+				}
+			}
+		}
     } 
 	else {
 		// Die

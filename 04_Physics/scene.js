@@ -12,11 +12,25 @@ function Scene()
 
 	// Create entities
 	this.player = new Player(224,352, this.map);
-	this.goomba = new Goomba(704,352, this.map);
-	// Store current time
-	this.currentTime = 0
+
 	//max Camara
 	this.maxCameraX = 0;
+	
+	// this.goomba = new Goomba(704,352, this.map);
+	// this.goomba = new Goomba(704,416, this.map);
+	// this.goomba = new Goomba(704,512, this.map);
+	this.enemisGommba = [];
+	this.enemisGommba[0] = new Goomba(512,352, this.map);
+	this.enemisGommba[1] = new Goomba(704,352, this.map);
+	this.enemisGommba[2] = new Goomba(640,352, this.map);
+	this.enemisGommba[3] = new Goomba(960,352, this.map);
+	this.enemisGommba[4] = new Goomba(1280,352, this.map);
+	this.enemisGommba[5] = new Goomba(1600,352, this.map);
+	this.enemisGommba[6] = new Goomba(1632,352, this.map);
+
+	// Store current time
+	this.currentTime = 0
+	
 }
 
 
@@ -28,21 +42,29 @@ Scene.prototype.update = function(deltaTime)
 	// Update entities
 	this.player.update(deltaTime);
 
-	this.goomba.update(deltaTime);
+	this.enemisGommba.forEach(goomba =>{goomba.update(deltaTime);})
 
 	this.map.bricks.forEach(brick => {brick.update(deltaTime);});
 	this.map.interrogation.forEach(interrogation => {interrogation.update(deltaTime);});
 	this.map.coin.forEach(coin => {	coin.update(deltaTime);	});
 
-	
-	var colision  = this.goomba.collisionBox().intersectSide(this.player.collisionBox());
-	if(!!colision ){
-		if (colision[1] === 'arriba'){
-			this.goomba.die();
-		}else if(this.goomba.active && this.goomba.live){
-			this.player.die();
+	var cameraWidth = document.getElementById("game-layer").width;
+
+	this.enemisGommba.forEach((goomba)=>{
+		var colision  = goomba.collisionBox().intersectSide(this.player.collisionBox());
+		if(!!colision ){
+			if (colision[1] === 'arriba'){
+				goomba.die();
+			}else if(goomba.active && goomba.live){
+				this.player.die();
+			}
 		}
-	}
+		if (goomba.sprite.x >= this.maxCameraX && goomba.sprite.x <= this.maxCameraX + cameraWidth) {
+			goomba.move = true;
+		}
+
+	})
+	
 
 	this.map.bricks.forEach(brick => {
 		var colisionBrick  = brick.collisionBox().intersectSide(this.player.collisionBox());
@@ -98,7 +120,7 @@ Scene.prototype.draw = function ()
 	// Draw tilemap
 	this.map.draw();
 
-	if(this.goomba.active) this.goomba.draw();
+	this.enemisGommba.forEach(goomba => { if(goomba.active) goomba.draw(); })
 	
 	this.map.bricks.forEach(brick => {	brick.draw();	});
 	this.map.interrogation.forEach(interrogation => {	interrogation.draw();	});
