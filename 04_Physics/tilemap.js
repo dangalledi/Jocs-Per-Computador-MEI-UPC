@@ -133,17 +133,3 @@ Tilemap.prototype.collisionMoveUp = function(sprite)
     
     return false;
 }
-
-Tilemap.prototype.replaceTileIdWithBrick = function(tileId, brick)
-{
-    // Iterate over each tile in the map
-    for(var lay=0; lay < this.map.layers.length; lay++){
-        for(var i=0; i<this.map.layers[lay].data.length; i++){
-            // If the tileId matches the given tileId, replace it with a brick
-            if(this.map.layers[lay].data[i] === tileId){
-                this.map.layers[lay].data[i] = 0; // Set the tile to 0 (empty)
-                this.bricks.push(brick); // Add the brick to the bricks array
-            }
-        }
-    }
-}
