@@ -86,6 +86,9 @@ Scene.prototype.update = function(deltaTime)
 	});
 
 	this.map.coin.forEach(coin => {
+		this.map.bricks.forEach((brick)=>{
+			if(coin.collisionBox().intersect(brick.collisionBox()))coin.active = false;
+		})
 		if( coin.collisionBox().intersect(this.player.collisionBox())){
 			coin.active = false;
 		}
