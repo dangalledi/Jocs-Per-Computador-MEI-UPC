@@ -7,6 +7,14 @@ const MARIO_STAND_DIE = 4;
 const MARIO_JUMP_LEFT = 5;
 const MARIO_JUMP_RIGHT = 6;
 
+
+var minWalkSpeed = 60;
+var walkAccel = 60;
+var runAccel = 120;
+var releaseDecel = 360;
+var maxWalkSpeed = 120;
+var maxRunSpeed = 240;
+
 function Player(x, y, map) {
 	// // Loading spritesheets
 	// Loading spritesheets
@@ -54,6 +62,9 @@ function Player(x, y, map) {
 	// Set attributes for jump
 	this.bJumping = false;
 	this.jumpAngle = 0;
+
+	this.speed = 0;
+
 }
 
 
@@ -63,16 +74,16 @@ Player.prototype.update = function (deltaTime) {
 
 		this.controlFormaBrick(this.map.bricks);
 		this.controlFormaBrick(this.map.interrogation);
-		
+
 		if (keyboard[37]) // KEY_LEFT
 		{
 			if (this.sprite.currentAnimation != MARIO_WALK_LEFT)
 				this.sprite.setAnimation(MARIO_WALK_LEFT);
-			this.sprite.x -= 2;
-			if (this.map.collisionMoveLeft(this.sprite) ||this.downBrick||  this.sprite.x + 2 < 0) //choque con coliciones o salida de pantalla
-				this.sprite.x += 2;this.downBrick = false;
-			if(this.bJumping){
-				if(this.sprite.currentAnimation != MARIO_JUMP_LEFT){
+			//  this.sprite.x -= 2;
+			// if (this.map.collisionMoveLeft(this.sprite) || this.downBrick || this.sprite.x + 2 < 0) //choque con coliciones o salida de pantalla
+			// 	this.downBrick = false;// this.sprite.x += 2; 
+			if (this.bJumping) {
+				if (this.sprite.currentAnimation != MARIO_JUMP_LEFT) {
 					this.sprite.setAnimation(MARIO_JUMP_LEFT);
 				}
 			}
@@ -81,23 +92,23 @@ Player.prototype.update = function (deltaTime) {
 		{
 			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
 				this.sprite.setAnimation(MARIO_WALK_RIGHT);
-			this.sprite.x += 2;
-			if (this.map.collisionMoveRight(this.sprite)  ||this.downBrick) //choque con coliciones o salida de pantalla
-				this.sprite.x -= 2;this.downBrick = false;
-			
-			if(this.bJumping){
-				if(this.sprite.currentAnimation != MARIO_JUMP_RIGHT){
+			// this.sprite.x += 2;
+			// if (this.map.collisionMoveRight(this.sprite) || this.downBrick) //choque con coliciones o salida de pantalla
+			// 	this.downBrick = false;this.speed=0;//this.sprite.x -= 2; 
+
+			if (this.bJumping) {
+				if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT) {
 					this.sprite.setAnimation(MARIO_JUMP_RIGHT);
 				}
 			}
 		}
 		else {
-			if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT){
-				if(!this.bJumping)
+			if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT) {
+				if (!this.bJumping)
 					this.sprite.setAnimation(MARIO_STAND_LEFT);
 			}
-			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT){
-				if(!this.bJumping)
+			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT) {
+				if (!this.bJumping)
 					this.sprite.setAnimation(MARIO_STAND_RIGHT);
 			}
 		}
@@ -113,7 +124,7 @@ Player.prototype.update = function (deltaTime) {
 
 				if (this.jumpAngle > 90)
 					this.bJumping = (!this.map.collisionMoveDown(this.sprite) && !this.upBrick); //se queda en la plataforma
-				if(this.map.collisionMoveUp(this.sprite)) { //Intento de que se salga del mapa por arriba
+				if (this.map.collisionMoveUp(this.sprite)) { //Intento de que se salga del mapa por arriba
 					this.bJumping = false;
 				};
 			}
@@ -121,11 +132,14 @@ Player.prototype.update = function (deltaTime) {
 		else {
 			// Move Bub so that it is affected by gravity
 			this.sprite.y += 2;
-			
+
 			if (this.map.collisionMoveDown(this.sprite) || this.upBrick) {
 				this.jump();
 			}
 		}
+	
+		this.move(deltaTime);
+
 	}
 	else {
 		// Die
@@ -137,7 +151,7 @@ Player.prototype.update = function (deltaTime) {
 	this.sprite.update(deltaTime);
 }
 
-Player.prototype.die = function die () {
+Player.prototype.die = function die() {
 	this.live = false;
 }
 
@@ -150,42 +164,129 @@ Player.prototype.collisionBox = function () {
 	return box;
 }
 
-Player.prototype.jump = function(){
+Player.prototype.jump = function () {
 	this.upBrick = false
-		// Check arrow up key. If pressed, jump.
-		if (keyboard[32]) {
-			this.bJumping = true;
-			this.jumpAngle = 0;
-			this.startY = this.sprite.y;
-			if(this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT )
-				this.sprite.setAnimation(MARIO_JUMP_LEFT);
-			if(this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT )
-				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
-		}
+	// Check arrow up key. If pressed, jump.
+	if (keyboard[32]) {
+		this.bJumping = true;
+		this.jumpAngle = 0;
+		this.startY = this.sprite.y;
+		if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT)
+			this.sprite.setAnimation(MARIO_JUMP_LEFT);
+		if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT)
+			this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+	}
 }
 
-Player.prototype.controlFormaBrick = function(ladrillos){
-	for(var i = 0; i < ladrillos.length; i++) {
+Player.prototype.controlFormaBrick = function (ladrillos) {
+	for (var i = 0; i < ladrillos.length; i++) {
 		var brick = ladrillos[i];
 		var col = this.collisionBox().intersectSide(brick.collisionBox());
 
-		if(!!col && col[1]==='arriba'){
+		if (!!col && col[1] === 'arriba') {
 			this.bJumping = false;
-			this.downBrick =true
+			this.downBrick = true
 		}
-		if(!!col && col[1]=== 'abajo') {
+		if (!!col && col[1] === 'abajo') {
 			// If the player is colliding with the brick, move the player to the top of the brick
 			this.sprite.y = brick.sprite.y - this.sprite.height;
 			// this.bJumping = false;
 			this.upBrick = true
 		}
-		if(!!col && col[0]==='derecha'){
-			if(!!col && col[1] != 'abajo') this.sprite.x -= 2;
+		if (!!col && col[0] === 'derecha') {
+			if (!!col && col[1] != 'abajo') this.sprite.x -= 2;
 			// this.bJumping = false;
 		}
-		if(!!col && col[0]==='izquierda'){
-			if(!!col && col[1] != 'abajo') this.sprite.x += 2;
+		if (!!col && col[0] === 'izquierda') {
+			if (!!col && col[1] != 'abajo') this.sprite.x += 2;
 			// this.bJumping = false;
 		}
 	}
+}
+
+Player.prototype.move = function (deltaTime) {
+
+	var accel = 0;
+
+	if (keyboard[37] || keyboard[39]) {
+		// Pressing move buttons
+		if (keyboard[37] && (this.speed > -minWalkSpeed))
+			this.speed = -minWalkSpeed;
+		else if (keyboard[39] && (this.speed < minWalkSpeed))
+			this.speed = minWalkSpeed;
+		// Prepare acceleration according to action (walk or run)
+		if (keyboard[16]) {
+			if (keyboard[37])
+				accel = -runAccel;
+			else
+				accel = runAccel;
+		}
+		else {
+			if (keyboard[37])
+				accel = -walkAccel;
+			else
+				accel = walkAccel;
+		}
+	}
+	else {
+		if (this.speed > 0)
+			accel = -releaseDecel;
+		else if (this.speed < 0)
+			accel = releaseDecel;
+		else
+			accel = 0;
+	}
+
+	var proxPosX = this.sprite.x + this.speed * deltaTime / 1000.0;
+
+	if (this.map.collisionMoveLeft(this.sprite) || this.downBrick || this.sprite.x + 2 < 0) {//choque con coliciones o salida de pantalla
+		this.downBrick = false;
+
+		if(proxPosX>this.sprite.x) this.sprite.x = proxPosX
+	}
+	else if (this.map.collisionMoveRight(this.sprite) || this.downBrick){//choque con coliciones o salida de pantalla
+		this.downBrick = false;//this.sprite.x -= 2;
+
+		if(proxPosX<this.sprite.x) this.sprite.x = proxPosX
+	} 
+	else{
+		this.sprite.x = proxPosX
+	}
+	// Apply acceleration to current speed
+	if (keyboard[37] || keyboard[39]) {
+		this.speed = this.speed + accel * deltaTime / 1000.0;
+
+		// Respect maximum speeds
+		if (keyboard[16]) {
+			if (Math.abs(this.speed) > maxRunSpeed) {
+				if (this.speed > 0)
+					this.speed = maxRunSpeed;
+				else
+					this.speed = -maxRunSpeed;
+			}
+		}
+		else {
+			if (Math.abs(this.speed) > maxWalkSpeed) {
+				if (this.speed > 0)
+					this.speed = maxWalkSpeed;
+				else
+					this.speed = -maxWalkSpeed;
+			}
+		}
+	}
+	else {
+		// Be careful to stop when current acceleration gets close to zero
+		if (this.speed > 0) {
+			this.speed = this.speed + accel * deltaTime / 1000.0;
+			if (this.speed < minWalkSpeed)
+				this.speed = 0;
+		}
+		else if (this.speed < 0) {
+			this.speed = this.speed + accel * deltaTime / 1000.0;
+			if (this.speed > -minWalkSpeed)
+				this.speed = 0;
+		}
+	}
+
+	console.log("Speed = " + this.speed);
 }
