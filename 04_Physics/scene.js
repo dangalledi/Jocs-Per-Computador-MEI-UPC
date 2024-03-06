@@ -74,9 +74,11 @@ Scene.prototype.update = function (deltaTime) {
 		// Play jumpSound sound when spacebar pressed
 		if (keyboard[32] && interacted)
 			this.jumpSound.play();
-
 	})
 
+	if(this.maxCameraX > this.player.collisionBox().min_x) this.player.leftColision = true;
+
+	if(this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
 
 	this.map.bricks.forEach(brick => {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());

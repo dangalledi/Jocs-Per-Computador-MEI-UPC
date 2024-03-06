@@ -23,8 +23,9 @@ function Player(x, y, map) {
 	this.live = true;
 	this.upBrick = false; //piso brick
 	this.downBrick = false; //choque arriba ladrillo
-	this.leftBrick = false;
-	this.rigthBrick = false;
+
+	this.leftColision = false;
+	this.rigthColision = false;
 	//this.active = true;
 	// Prepare Bub sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 17, mario);
@@ -239,13 +240,15 @@ Player.prototype.move = function (deltaTime) {
 
 	var proxPosX = this.sprite.x + this.speed * deltaTime / 1000.0;
 
-	if (this.map.collisionMoveLeft(this.sprite) || this.downBrick || this.sprite.x + 2 < 0) {//choque con coliciones o salida de pantalla
+	if (this.map.collisionMoveLeft(this.sprite) || this.downBrick || this.leftColision) {//choque con coliciones o salida de pantalla
 		this.downBrick = false;
+		this.leftColision = false;
 
 		if(proxPosX>this.sprite.x) this.sprite.x = proxPosX
 	}
-	else if (this.map.collisionMoveRight(this.sprite) || this.downBrick){//choque con coliciones o salida de pantalla
+	else if (this.map.collisionMoveRight(this.sprite) || this.downBric || this.rigthColision){//choque con coliciones o salida de pantalla
 		this.downBrick = false;//this.sprite.x -= 2;
+		this.rigthColision = false;
 
 		if(proxPosX<this.sprite.x) this.sprite.x = proxPosX
 	} 
@@ -288,5 +291,4 @@ Player.prototype.move = function (deltaTime) {
 		}
 	}
 
-	console.log("Speed = " + this.speed);
 }
