@@ -15,15 +15,16 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
-function Player(x, y, map) {
+function Player(x, y, map, lives) {
 	// // Loading spritesheets
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 	// Set attributes for vivo y activo
+	this.lives=lives;
 	this.live = true;
 	this.upBrick = false; //piso brick
 	this.downBrick = false; //choque arriba ladrillo
-
+	this.down=false;
 	this.leftColision = false;
 	this.rigthColision = false;
 	//this.active = true;
@@ -65,6 +66,11 @@ function Player(x, y, map) {
 	this.jumpAngle = 0;
 
 	this.speed = 0;
+
+	this.originalY = y;
+	this.maxBounceHeight = 64; // Change this to the maximum bounce height you want
+	this.bouncing = false;
+	this.goingUp = true;
 
 }
 
@@ -147,6 +153,36 @@ Player.prototype.update = function (deltaTime) {
 		if (this.sprite.currentAnimation != MARIO_STAND_DIE) {
 			this.sprite.setAnimation(MARIO_STAND_DIE);
 		}
+		//Bounce die
+		if (this.bouncing) {
+			if (this.goingUp) {
+				if (this.sprite.y > this.originalY - this.maxBounceHeight) {
+					// Move the brick up
+					this.sprite.y -= 3;
+				} else {
+					// Start moving the brick down
+					this.goingUp = false;
+				}
+			} else {
+				// Move the brick down
+				this.sprite.y += 3;
+				// If the brick has returned to its original this.sprite.y >= this.originalYposition, stop bouncing
+				if (this.sprite.y >= this.originalY) {
+					this.sprite.y = this.originalY;
+					this.bouncing = false;
+					this.goingUp = true;
+					this.down = true;
+				}
+			}
+		}
+		else if(this.down){
+			if(this.sprite.y < 500)	this.sprite.y += 3;
+			else{
+				this.lives = this.lives-1;
+				pauseGame();
+				restartGame(this.lives)
+			}
+		}
 	}
 	// Update sprites
 	this.sprite.update(deltaTime);
@@ -154,6 +190,7 @@ Player.prototype.update = function (deltaTime) {
 
 Player.prototype.die = function die() {
 	this.live = false;
+	this.bouncing = true;
 }
 
 Player.prototype.draw = function () {

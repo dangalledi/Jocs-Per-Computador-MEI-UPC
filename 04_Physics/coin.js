@@ -5,6 +5,7 @@ function Coin(x, y)
 	var coin = new Texture("imgs/coin.png");
 
 	this.active = true;
+	this.take  = true;
 
 	// Prepare coin sprite & its animation
 	this.sprite = new Sprite(x, y, 32, 32, 3, coin);

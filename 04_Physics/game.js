@@ -4,13 +4,13 @@
 const FRAME_RATE = 60;
 const TIME_PER_FRAME = 1000 / FRAME_RATE;
 
-var scene = new Scene();
+var scene = new Scene(3);
 var previousTimestamp;
 var keyboard = [];
 var interacted;
-
-
+var isPaused = false;
 // Control keyboard events
+
 
 function keyDown(keycode)
 {
@@ -46,23 +46,46 @@ function init()
 
 function frameUpdate(timestamp)
 {
-	var bUpdated = false;
-	var deltaTime = timestamp - previousTimestamp;
-	
-	while(deltaTime > TIME_PER_FRAME)
-	{
-		bUpdated = true;
-		scene.update(TIME_PER_FRAME);
-		previousTimestamp += TIME_PER_FRAME;
-		deltaTime = timestamp - previousTimestamp;
-	}
-	if(bUpdated)
-		scene.draw();
-	window.requestAnimationFrame(frameUpdate)
+	if (!isPaused) {
+        var bUpdated = false;
+        var deltaTime = timestamp - previousTimestamp;
+
+        while(deltaTime > TIME_PER_FRAME) {
+            bUpdated = true;
+            scene.update(TIME_PER_FRAME);
+            previousTimestamp += TIME_PER_FRAME;
+            deltaTime = timestamp - previousTimestamp;
+        }
+        if(bUpdated)
+            scene.draw();
+    }
+    window.requestAnimationFrame(frameUpdate)
+
 }
 
+// Add a new function to pause the game
+function pauseGame() {
+    isPaused = true;
+}
+
+// Add a new function to resume the game
+function resumeGame() {
+    isPaused = false;
+    previousTimestamp = performance.now();
+    frameUpdate(previousTimestamp);
+}
+
+function restartGame(lives) {
+	if(lives==0){
+		pauseGame()
+	}else{
+		scene = new Scene(lives);
+		isPaused = false;
+		init();
+		frameUpdate(previousTimestamp);
+	}
+}
 
 // Init and launch game loop
 init();
 frameUpdate(previousTimestamp);
-

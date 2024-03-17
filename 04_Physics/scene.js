@@ -1,23 +1,22 @@
 
 
 // Scene. Updates and draws a single scene of the game.
-
-function Scene() {
+function Scene(lives) {
 	// Loading texture to use in a TileMap
 	var tilesheet = new Texture("imgs/fondo.png");
 
+    // Create a deep copy of level01
+    this.level = JSON.parse(JSON.stringify(level01));
+
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], level01);
+	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], this.level);
 
 	// Create entities
-	this.player = new Player(224, 352, this.map);
+	this.player = new Player(224, 352, this.map, lives);
 
 	//max Camara
 	this.maxCameraX = 0;
 
-	// this.goomba = new Goomba(704,352, this.map);
-	// this.goomba = new Goomba(704,416, this.map);
-	// this.goomba = new Goomba(704,512, this.map);
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
 	this.enemisGommba[1] = new Goomba(704, 352, this.map);
@@ -36,6 +35,7 @@ function Scene() {
 	// Store current time
 	this.currentTime = 0
 
+	this.puntaje  = 0;
 }
 
 
@@ -45,21 +45,75 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
-
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); })
-
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
 	this.map.interrogation.forEach(interrogation => { interrogation.update(deltaTime); });
 	this.map.coin.forEach(coin => { coin.update(deltaTime); });
 
+
 	var cameraWidth = document.getElementById("game-layer").width;
+
+	if(this.maxCameraX > this.player.collisionBox().min_x) this.player.leftColision = true;
+
+	if(this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
+
+
+	this.map.bricks.forEach(brick => {
+		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
+		if (!!colisionBrick) {
+			if (colisionBrick[1] === 'abajo' && this.player.live) {
+				// this.brick.sprite.y -= 0.5; 
+				brick.bouncing = true;
+				// this.player.sprite.y -= 2
+				if (interacted)
+					this.brickSound.play();
+			}
+		}
+	});
+
+	this.map.interrogation.forEach(interrogation => {
+		var colitionInterrogation = interrogation.collisionBox().intersectSide(this.player.collisionBox());
+		if (!!colitionInterrogation && colitionInterrogation[1] === 'abajo' && this.player.live) {
+			interrogation.die();
+			interrogation.bouncing = true;
+		}
+	});
+
+	this.map.coin.forEach(coin => {
+		this.map.bricks.forEach((brick) => {
+			if (coin.collisionBox().intersect(brick.collisionBox()) && this.player.live) {
+				if(coin.take){
+					this.puntaje=this.puntaje+100;
+					coin.take = false
+				}
+				if (interacted && coin.active){
+					this.coinSound.play();
+				}
+				setTimeout(() => {
+					coin.active = false;
+				}, 200);
+			}
+		})
+		if (coin.collisionBox().intersect(this.player.collisionBox()) && this.player.live) {
+			if (interacted && coin.active){
+				this.coinSound.play();
+			}
+			if(coin.take){
+				this.puntaje=this.puntaje+100;
+				coin.take = false
+			}
+			setTimeout(() => {
+				coin.active = false;
+			}, 200);
+		}
+	})
 
 	this.enemisGommba.forEach((goomba) => {
 		var colision = goomba.collisionBox().intersectSide(this.player.collisionBox());
-		if (!!colision) {
+		if (!!colision && this.player.live) {
 			if (colision[1] === 'arriba') {
 				goomba.die();
-			} else if (goomba.active && goomba.live) {
+			} else if (goomba.active && goomba.live ) {
 				this.player.die();
 			}
 		}
@@ -76,49 +130,7 @@ Scene.prototype.update = function (deltaTime) {
 			this.jumpSound.play();
 	})
 
-	if(this.maxCameraX > this.player.collisionBox().min_x) this.player.leftColision = true;
 
-	if(this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
-
-	this.map.bricks.forEach(brick => {
-		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
-		if (!!colisionBrick) {
-			if (colisionBrick[1] === 'abajo') {
-				// this.brick.sprite.y -= 0.5; 
-				brick.bouncing = true;
-				// this.player.sprite.y -= 2
-				if (interacted)
-					this.brickSound.play();
-			}
-		}
-	});
-
-	this.map.interrogation.forEach(interrogation => {
-		var colitionInterrogation = interrogation.collisionBox().intersectSide(this.player.collisionBox());
-		if (!!colitionInterrogation && colitionInterrogation[1] === 'abajo') {
-			interrogation.die();
-			interrogation.bouncing = true;
-		}
-	});
-
-	this.map.coin.forEach(coin => {
-		this.map.bricks.forEach((brick) => {
-			if (coin.collisionBox().intersect(brick.collisionBox())) {
-				setTimeout(() => {
-					coin.active = false;
-				}, 200);
-				if (interacted && coin.active)
-					this.coinSound.play();
-			}
-		})
-		if (coin.collisionBox().intersect(this.player.collisionBox())) {
-			setTimeout(() => {
-				coin.active = false;
-			}, 200);
-			if (interacted && coin.active)
-				this.coinSound.play();
-		}
-	})
 }
 
 Scene.prototype.draw = function () {
@@ -138,7 +150,7 @@ Scene.prototype.draw = function () {
 
 	// Apply transformation to context
 	context.save();
-	context.translate(-cameraX, 0);
+	context.translate(-Math.floor(cameraX), 0);
 
 
 	// Clear background
@@ -156,16 +168,21 @@ Scene.prototype.draw = function () {
 	this.player.draw();
 
 	// Draw text
-	if (keyboard[32]) {
-		// var text = "Spacebar pressed";
-		// context.font = "24px Verdana";
-		// var textSize = context.measureText(text);
-		// context.fillStyle = "SlateGrey";
-		// context.fillText(text, 256 - textSize.width/2, 224 + 12);
-	}
-
+	// if (keyboard[32]) {
+	// 	// var text = "Spacebar pressed";
+	// 	// context.font = "24px Verdana";
+	// 	// var textSize = context.measureText(text);
+	// 	// context.fillStyle = "SlateGrey";
+	// 	// context.fillText(text, 256 - textSize.width/2, 224 + 12);
+	// }
 	// Restore the context
 	context.restore();
+
+	text = "Puntaje: "+ this.puntaje+"  Vidas: "+ this.player.lives;
+	context.font = "10px Verdana";
+	var textSize = context.measureText(text);
+	context.fillText(text,textSize.width/2, 10);
+
 }
 
 
