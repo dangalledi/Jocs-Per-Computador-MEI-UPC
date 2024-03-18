@@ -7,6 +7,8 @@ const MARIO_STAND_DIE = 4;
 const MARIO_JUMP_LEFT = 5;
 const MARIO_JUMP_RIGHT = 6;
 
+const STATE_MINI =1;
+const STATE_MAX = 2;
 
 var minWalkSpeed = 60;
 var walkAccel = 60;
@@ -19,6 +21,7 @@ function Player(x, y, map, lives) {
 	// // Loading spritesheets
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
+	this.state = STATE_MINI;
 	// Set attributes for vivo y activo
 	this.lives=lives;
 	this.live = true;
@@ -84,39 +87,42 @@ Player.prototype.update = function (deltaTime) {
 
 		if (keyboard[37]) // KEY_LEFT
 		{
-			if (this.sprite.currentAnimation != MARIO_WALK_LEFT)
-				this.sprite.setAnimation(MARIO_WALK_LEFT);
-			//  this.sprite.x -= 2;
-			// if (this.map.collisionMoveLeft(this.sprite) || this.downBrick || this.sprite.x + 2 < 0) //choque con coliciones o salida de pantalla
-			// 	this.downBrick = false;// this.sprite.x += 2; 
-			if (this.bJumping) {
-				if (this.sprite.currentAnimation != MARIO_JUMP_LEFT) {
-					this.sprite.setAnimation(MARIO_JUMP_LEFT);
+			if (this.state == STATE_MINI) {
+				if (this.sprite.currentAnimation != MARIO_WALK_LEFT)
+					this.sprite.setAnimation(MARIO_WALK_LEFT);
+				if (this.bJumping) {
+					if (this.sprite.currentAnimation != MARIO_JUMP_LEFT) {
+						this.sprite.setAnimation(MARIO_JUMP_LEFT);
+					}
 				}
 			}
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
-			if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
-				this.sprite.setAnimation(MARIO_WALK_RIGHT);
-			// this.sprite.x += 2;
-			// if (this.map.collisionMoveRight(this.sprite) || this.downBrick) //choque con coliciones o salida de pantalla
-			// 	this.downBrick = false;this.speed=0;//this.sprite.x -= 2; 
+			if (this.state == STATE_MINI) {
+				if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
+					this.sprite.setAnimation(MARIO_WALK_RIGHT);
+				// this.sprite.x += 2;
+				// if (this.map.collisionMoveRight(this.sprite) || this.downBrick) //choque con coliciones o salida de pantalla
+				// 	this.downBrick = false;this.speed=0;//this.sprite.x -= 2; 
 
-			if (this.bJumping) {
-				if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT) {
-					this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+				if (this.bJumping) {
+					if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT) {
+						this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+					}
 				}
 			}
 		}
 		else {
-			if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT) {
-				if (!this.bJumping)
-					this.sprite.setAnimation(MARIO_STAND_LEFT);
-			}
-			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT) {
-				if (!this.bJumping)
-					this.sprite.setAnimation(MARIO_STAND_RIGHT);
+			if (this.state == STATE_MINI) {
+				if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT) {
+					if (!this.bJumping)
+						this.sprite.setAnimation(MARIO_STAND_LEFT);
+				}
+				if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT) {
+					if (!this.bJumping)
+						this.sprite.setAnimation(MARIO_STAND_RIGHT);
+				}
 			}
 		}
 
@@ -189,8 +195,10 @@ Player.prototype.update = function (deltaTime) {
 }
 
 Player.prototype.die = function die() {
-	this.live = false;
-	this.bouncing = true;
+	if(this.state== STATE_MINI){
+		this.live = false;
+		this.bouncing = true;
+	}
 }
 
 Player.prototype.draw = function () {
@@ -209,10 +217,12 @@ Player.prototype.jump = function () {
 		this.bJumping = true;
 		this.jumpAngle = 0;
 		this.startY = this.sprite.y;
-		if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT)
-			this.sprite.setAnimation(MARIO_JUMP_LEFT);
-		if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT)
-			this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+		if (this.state == STATE_MINI) {
+			if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_STAND_LEFT)
+				this.sprite.setAnimation(MARIO_JUMP_LEFT);
+			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT)
+				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+		}
 	}
 }
 
