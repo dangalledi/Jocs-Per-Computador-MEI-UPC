@@ -48,7 +48,6 @@ function init()
 }
 
 // Game loop: Update, draw, and request a new frame
-var timeP = 0;
 function frameUpdate(timestamp){
 	var bUpdated = false;
 	var deltaTime = timestamp - previousTimestamp + timeP;
