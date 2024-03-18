@@ -161,27 +161,24 @@ Scene.prototype.draw = function () {
 	this.map.draw();
 
 	this.enemisGommba.forEach(goomba => { if (goomba.active) goomba.draw(); })
-
-	this.map.bricks.forEach(brick => { brick.draw(); });
-	this.map.interrogation.forEach(interrogation => { interrogation.draw(); });
-	this.map.coin.forEach(coin => { if (coin.active) coin.draw(); });
+	
 	this.player.draw();
 
 	// Draw text
-	// if (keyboard[32]) {
-	// 	// var text = "Spacebar pressed";
-	// 	// context.font = "24px Verdana";
-	// 	// var textSize = context.measureText(text);
-	// 	// context.fillStyle = "SlateGrey";
-	// 	// context.fillText(text, 256 - textSize.width/2, 224 + 12);
-	// }
+	if (!this.player.live) {
+		var text = "Muerte";
+		context.font = "50px Mario";
+		var textSize = context.measureText(text);
+		context.fillStyle = "#000";
+		context.fillText(text, 256 - textSize.width/2, 224 + 12);
+	}
 	// Restore the context
 	context.restore();
 
 	text = "Puntaje: "+ this.puntaje+"  Vidas: "+ this.player.lives;
-	context.font = "10px Verdana";
-	var textSize = context.measureText(text);
-	context.fillText(text,textSize.width/2, 10);
+	context.font = "10px Mario";
+	context.fillStyle = "#fff";
+	context.fillText(text,10, 25);
 
 }
 

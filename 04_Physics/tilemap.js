@@ -66,6 +66,10 @@ Tilemap.prototype.draw = function ()
 			
 			}
 	}
+
+	this.bricks.forEach(brick => { brick.draw(); });
+	this.interrogation.forEach(interrogation => { interrogation.draw(); });
+	this.coin.forEach(coin => { if (coin.active) coin.draw(); });
 }
 
 // Computes if the left part of a sprite collides with the tilemap.
