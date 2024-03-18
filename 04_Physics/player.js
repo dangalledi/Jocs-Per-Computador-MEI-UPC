@@ -25,6 +25,7 @@ function Player(x, y, map, lives) {
 	// Set attributes for vivo y activo
 	this.lives=lives;
 	this.live = true;
+	
 	this.upBrick = false; //piso brick
 	this.downBrick = false; //choque arriba ladrillo
 	this.down=false;
@@ -81,7 +82,6 @@ function Player(x, y, map, lives) {
 Player.prototype.update = function (deltaTime) {
 
 	if (this.live) {
-
 		this.controlFormaBrick(this.map.bricks);
 		this.controlFormaBrick(this.map.interrogation);
 

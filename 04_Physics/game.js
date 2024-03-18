@@ -16,6 +16,11 @@ function keyDown(keycode)
 {
 	if(keycode.which >= 0 && keycode.which < 256)
 		keyboard[keycode.which] = true;
+
+	if(keycode.which === 80) {
+		// Toggle the pause state
+		isPaused = !isPaused;
+	}
 }
 
 function keyUp(keycode)
@@ -43,30 +48,33 @@ function init()
 }
 
 // Game loop: Update, draw, and request a new frame
+var timeP = 0;
+function frameUpdate(timestamp){
+	var bUpdated = false;
+	var deltaTime = timestamp - previousTimestamp + timeP;
+	
 
-function frameUpdate(timestamp)
-{
-	if (!isPaused) {
-        var bUpdated = false;
-        var deltaTime = timestamp - previousTimestamp;
+	while(deltaTime > TIME_PER_FRAME) {
+		bUpdated = true;
+		if (!isPaused) scene.update(TIME_PER_FRAME);
+		previousTimestamp += TIME_PER_FRAME;
+		deltaTime = timestamp - previousTimestamp;
+	}
+	if(bUpdated)
+		scene.draw();
 
-        while(deltaTime > TIME_PER_FRAME) {
-            bUpdated = true;
-            scene.update(TIME_PER_FRAME);
-            previousTimestamp += TIME_PER_FRAME;
-            deltaTime = timestamp - previousTimestamp;
-        }
-        if(bUpdated)
-            scene.draw();
-    }
+
     window.requestAnimationFrame(frameUpdate)
-
 }
 
 // Add a new function to pause the game
 function pauseGame() {
     isPaused = true;
 }
+function unPauseGame() {
+    isPaused = true;
+}
+
 
 // Add a new function to resume the game
 function resumeGame() {
