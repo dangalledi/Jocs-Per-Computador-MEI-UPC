@@ -31,10 +31,7 @@ function Goomba(x, y, map) {
 	this.sprite.addKeyframe(DIE, [32, 0, 16, 16]);
 
 	this.upBrick = false; //piso brick
-	this.downBrick = false; //choque arriba ladrillo
 	this.down = false;
-	this.leftColision = false;
-	this.rigthColision = false;
 }
 
 Goomba.prototype.die = function die() {
@@ -71,8 +68,11 @@ Goomba.prototype.update = function update(deltaTime) {
 		}
 
 		this.sprite.y += 2;
-		if (this.map.collisionMoveDown(this.sprite)) {
+		this.map.collisionMoveDown(this.sprite)
 
+		if(this.upBrick){
+			this.upBrick = false;
+			this.sprite.y -= 2;
 		}
 	}
 	else {
@@ -102,23 +102,16 @@ Goomba.prototype.controlFormaBrick = function (ladrillos) {
 		var brick = ladrillos[i];
 		var col = this.collisionBox().intersectSide(brick.collisionBox());
 
-		if (!!col && col[1] === 'arriba') {
-			this.bJumping = false;
-			this.downBrick = true
-		}
 		if (!!col && col[1] === 'abajo') {
 			// If the player is colliding with the brick, move the player to the top of the brick
-			this.sprite.y = brick.sprite.y - this.sprite.height;
-			// this.bJumping = false;
+			//this.sprite.y = brick.sprite.y - this.sprite.height; //correcta manera paro reobota :c 
 			this.upBrick = true
 		}
 		if (!!col && col[0] === 'derecha') {
 			if (!!col && col[1] != 'abajo') this.sprite.x -= 2;
-			// this.bJumping = false;
 		}
 		if (!!col && col[0] === 'izquierda') {
 			if (!!col && col[1] != 'abajo') this.sprite.x += 2;
-			// this.bJumping = false;
 		}
 	}
 }

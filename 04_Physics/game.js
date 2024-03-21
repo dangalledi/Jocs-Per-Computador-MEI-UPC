@@ -50,7 +50,7 @@ function init()
 // Game loop: Update, draw, and request a new frame
 function frameUpdate(timestamp){
 	var bUpdated = false;
-	var deltaTime = timestamp - previousTimestamp + timeP;
+	var deltaTime = timestamp - previousTimestamp;
 	
 
 	while(deltaTime > TIME_PER_FRAME) {
