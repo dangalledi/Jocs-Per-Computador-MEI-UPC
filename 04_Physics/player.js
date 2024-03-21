@@ -6,9 +6,16 @@ const MARIO_WALK_RIGHT = 3;
 const MARIO_STAND_DIE = 4;
 const MARIO_JUMP_LEFT = 5;
 const MARIO_JUMP_RIGHT = 6;
+const MARIO_STAND_RIGHT_STATE_START = 7;
+const MARIO_STAND_LEFT_STATE_START = 8;
+const MARIO_WALK_RIGHT_STATE_START = 9;
+const MARIO_WALK_LEFT_STATE_START = 10;
+const MARIO_JUMP_RIGHT_STATE_START = 11;
+const MARIO_JUMP_LEFT_STATE_START = 12;
 
 const STATE_MINI =1;
 const STATE_MAX = 2;
+const STATE_START_MINI =3;
 
 var minWalkSpeed = 60;
 var walkAccel = 60;
@@ -36,10 +43,10 @@ function Player(x, y, map, lives) {
 	this.sprite = new Sprite(x, y, 32, 32, 17, mario);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_LEFT, [64, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 16, 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT, [64, 32, 16, 16]);
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_WALK_LEFT, [16, 32, 16, 16]);
@@ -60,7 +67,63 @@ function Player(x, y, map, lives) {
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [16, 16, 16, 16]);
 
-	this.sprite.setAnimation(MARIO_STAND_RIGHT);
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [0, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [80, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [80, 64, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [64, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [64, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [144, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [144, 96, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [16, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [96, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [16, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [96, 64, 16, 16]);
+
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [32, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [112, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [32, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [112, 64, 16, 16]);
+
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [48, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [128, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [48, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [128, 64, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [16, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [96, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [16, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [96, 96, 16, 16]);
+
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [32, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [112, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [32, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [112, 96, 16, 16]);
+
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [48, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [128, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [48, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [128, 96, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [16, 16, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [96, 16, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [16, 80, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [96, 80, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [48, 48, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [128, 48, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [48, 112, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [128, 112, 16, 16]);
+
+	this.sprite.setAnimation(MARIO_JUMP_RIGHT_STATE_START);
 
 	// Set tilemap for collisions
 	this.map = map;
