@@ -10,6 +10,7 @@ const MARIO_DIE = 6;
 const STATE_MINI = 0;
 const STATE_MAX = 1;
 const STATE_START_MINI =2;
+const STATE_START_MAX =2;
 
 var minWalkSpeed = 60;
 var walkAccel = 60;
@@ -19,11 +20,11 @@ var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
 function Player(x, y, map, lives) {
-	// // Loading spritesheets
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 	this.state = STATE_MINI;
-	// Set attributes for vivo y activo
+
+	// Set attributes for VIDAS y activo
 	this.lives=lives;
 	this.live = true;
 	
@@ -149,13 +150,76 @@ function Player(x, y, map, lives) {
 	spriteBig.addAnimation();
 	spriteBig.addKeyframe(MARIO_JUMP_RIGHT, [80, 0, 16, 32]);
 
+	//Start
+	spriteStartBig = new Sprite(x, y, 32, 64, 17, marioBig);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_RIGHT, [0, 64, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_RIGHT, [112, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_RIGHT, [112, 64, 16, 32]);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_STAND_LEFT, [96, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_LEFT, [96, 96, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_LEFT, [208, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_STAND_LEFT, [208, 96, 16, 32]);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [96, 32, 16, 32])
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [96, 96, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [208, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [208, 96, 16, 32]);
+
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [80, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [80, 96, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [192, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [192, 96, 16, 32]);
+
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [64, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [64, 96, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [176, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_LEFT, [176, 96, 16, 32]);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [16, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [16, 64, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [128, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [128, 64, 16, 32]);
+ 
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [32, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [32, 64, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [112, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [112, 64, 16, 32]);
+	
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [48, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [160, 64, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [48, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_WALK_RIGHT, [160, 64, 16, 32]);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_JUMP_LEFT, [16, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_LEFT, [16, 96, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_LEFT, [128, 32, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_LEFT, [128, 96, 16, 32]);
+
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [80, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [80, 64, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [192, 0, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [192, 64, 16, 32]);
+
+
 	sprite.setAnimation(MARIO_STAND_RIGHT);
 	spriteStart.setAnimation(MARIO_STAND_RIGHT);
 	spriteBig.setAnimation(MARIO_STAND_RIGHT);
+	spriteStartBig.setAnimation(MARIO_STAND_RIGHT);
+
 
 	this.listSprit[STATE_MINI] = sprite;
 	this.listSprit[STATE_START_MINI] = spriteStart;
 	this.listSprit[STATE_MAX] = spriteBig;
+	this.listSprit[STATE_START_MAX] = spriteStartBig;
 
 	// Set tilemap for collisions
 	this.map = map;
@@ -291,16 +355,26 @@ Player.prototype.die = function die() {
 }
 
 Player.prototype.star = function start(){
-	const preStatus = this.state
-	this.listSprit[STATE_START_MINI].x = this.listSprit[this.state].x
-	this.listSprit[STATE_START_MINI].y = this.listSprit[this.state].y
-	this.state = STATE_START_MINI;
-
-	setTimeout(() => {
-		this.listSprit[preStatus].x = this.listSprit[this.state].x
-		this.listSprit[preStatus].y = this.listSprit[this.state].y
-		this.state = preStatus;
-	}, 10000);
+	if(this.state == STATE_MAX){
+		this.listSprit[STATE_START_MAX].x = this.listSprit[this.state].x
+		this.listSprit[STATE_START_MAX].y = this.listSprit[this.state].y
+		this.state = STATE_START_MAX;
+		setTimeout(() => {
+			this.listSprit[STATE_MAX].x = this.listSprit[this.state].x
+			this.listSprit[STATE_MAX].y = this.listSprit[this.state].y
+			this.state = STATE_MAX;
+		}, 10000);
+	}
+	if( this.state == STATE_MINI){
+		this.listSprit[STATE_START_MINI].x = this.listSprit[this.state].x
+		this.listSprit[STATE_START_MINI].y = this.listSprit[this.state].y
+		this.state = STATE_START_MINI;
+		setTimeout(() => {
+			this.listSprit[STATE_MINI].x = this.listSprit[this.state].x
+			this.listSprit[STATE_MINI].y = this.listSprit[this.state].y
+			this.state = STATE_MINI;
+		}, 10000);
+	}
 }
 
 Player.prototype.big = function big(){
