@@ -83,7 +83,7 @@ Star.prototype.update = function update(deltaTime){
 }
 
 Star.prototype.draw = function draw(){
-	this.sprite.draw();
+    if (this.active) this.sprite.draw();
 }
 
 Star.prototype.collisionBox = function(){

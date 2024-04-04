@@ -1,17 +1,19 @@
-
-const MARIO_STAND_LEFT = 0;
-const MARIO_STAND_RIGHT = 1;
+const MARIO_STAND_RIGHT = 0;
+const MARIO_STAND_LEFT = 1;
 const MARIO_WALK_LEFT = 2;
 const MARIO_WALK_RIGHT = 3;
-const MARIO_STAND_DIE = 4;
+
+const MARIO_DIE = 4;
+
 const MARIO_JUMP_LEFT = 5;
 const MARIO_JUMP_RIGHT = 6;
-const MARIO_STAND_RIGHT_STATE_START = 7;
-const MARIO_STAND_LEFT_STATE_START = 8;
-const MARIO_WALK_RIGHT_STATE_START = 9;
-const MARIO_WALK_LEFT_STATE_START = 10;
-const MARIO_JUMP_RIGHT_STATE_START = 11;
-const MARIO_JUMP_LEFT_STATE_START = 12;
+const MARIO_STAND_RIGHT_STATE_STAR = 7;
+const MARIO_STAND_LEFT_STATE_STAR = 8;
+const MARIO_WALK_RIGHT_STATE_STAR = 9;
+const MARIO_WALK_LEFT_STATE_STAR = 10;
+const MARIO_JUMP_RIGHT_STATE_STAR = 11;
+const MARIO_JUMP_LEFT_STATE_STAR = 12;
+
 
 const STATE_MINI =1;
 const STATE_MAX = 2;
@@ -41,7 +43,7 @@ function Player(x, y, map, lives) {
 	//this.active = true;
 	// Prepare Bub sprite & its animations
 	this.sprite = new Sprite(x, y, 32, 32, 17, mario);
-
+	//mario
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_STAND_RIGHT, [0, 0, 16, 16]);
 
@@ -59,7 +61,7 @@ function Player(x, y, map, lives) {
 	this.sprite.addKeyframe(MARIO_WALK_RIGHT, [48, 0, 16, 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_DIE, [32, 16, 16, 16]);
+	this.sprite.addKeyframe(MARIO_DIE, [32, 16, 16, 16]);
 
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_JUMP_LEFT, [48, 48, 16, 16]);
@@ -67,63 +69,69 @@ function Player(x, y, map, lives) {
 	this.sprite.addAnimation();
 	this.sprite.addKeyframe(MARIO_JUMP_RIGHT, [16, 16, 16, 16]);
 
-	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [0, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [0, 64, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [80, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_START, [80, 64, 16, 16]);
+	//Start
+	//this.sprite = new Sprite(x, y, 32, 32, 17, mario);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [64, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [64, 96, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [144, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_START, [144, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_STAR, [0, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_STAR, [0, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_STAR, [80, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_RIGHT_STATE_STAR, [80, 64, 16, 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [16, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [96, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [16, 64, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [96, 64, 16, 16]);
-
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [32, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [112, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [32, 64, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [112, 64, 16, 16]);
-
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [48, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [128, 0, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [48, 64, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_START, [128, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_STAR, [64, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_STAR, [64, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_STAR, [144, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_STAND_LEFT_STATE_STAR, [144, 96, 16, 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [16, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [96, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [16, 96, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [96, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [16, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [96, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [16, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [96, 64, 16, 16]);
+	//se muestra solo este
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [32, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [112, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [32, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [112, 64, 16, 16]);
+	
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [48, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [128, 0, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [48, 64, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_RIGHT_STATE_STAR, [128, 64, 16, 16]);
 
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [32, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [112, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [32, 96, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [112, 96, 16, 16]);
-
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [48, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [128, 32, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [48, 96, 16, 16]);
-	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_START, [128, 96, 16, 16]);
-
-	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [16, 16, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [96, 16, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [16, 80, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_START, [96, 80, 16, 16]);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [48, 48, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [128, 48, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [48, 112, 16, 16]);
-	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_START, [128, 112, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [16, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [96, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [16, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [96, 96, 16, 16]);
 
-	this.sprite.setAnimation(MARIO_JUMP_RIGHT_STATE_START);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [32, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [112, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [32, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [112, 96, 16, 16]);
+
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [48, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [128, 32, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [48, 96, 16, 16]);
+	this.sprite.addKeyframe(MARIO_WALK_LEFT_STATE_STAR, [128, 96, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_STAR, [16, 16, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_STAR, [96, 16, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_STAR, [16, 80, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_RIGHT_STATE_STAR, [96, 80, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_STAR, [48, 48, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_STAR, [128, 48, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_STAR, [48, 112, 16, 16]);
+	this.sprite.addKeyframe(MARIO_JUMP_LEFT_STATE_STAR, [128, 112, 16, 16]);
+
+	this.sprite.setAnimation(MARIO_STAND_RIGHT);
+	//this.sprite.setAnimation(MARIO_STAND_RIGHT_STATE_STAR);
+
 
 	// Set tilemap for collisions
 	this.map = map;
@@ -159,15 +167,22 @@ Player.prototype.update = function (deltaTime) {
 					}
 				}
 			}
+			if(this.state == STATE_START_MINI){
+				if (this.sprite.currentAnimation != MARIO_WALK_LEFT_STATE_STAR)
+					this.sprite.setAnimation(MARIO_WALK_LEFT_STATE_STAR);
+				if (this.bJumping) {
+					if (this.sprite.currentAnimation != MARIO_JUMP_LEFT_STATE_STAR) {
+						this.sprite.setAnimation(MARIO_JUMP_LEFT_STATE_STAR);
+					}
+				}
+			}
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
+			console.log(this.state, this.bJumping, this.sprite.currentAnimation)
 			if (this.state == STATE_MINI) {
 				if (this.sprite.currentAnimation != MARIO_WALK_RIGHT)
 					this.sprite.setAnimation(MARIO_WALK_RIGHT);
-				// this.sprite.x += 2;
-				// if (this.map.collisionMoveRight(this.sprite) || this.downBrick) //choque con coliciones o salida de pantalla
-				// 	this.downBrick = false;this.speed=0;//this.sprite.x -= 2; 
 
 				if (this.bJumping) {
 					if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT) {
@@ -175,16 +190,32 @@ Player.prototype.update = function (deltaTime) {
 					}
 				}
 			}
+			if(this.state == STATE_START_MINI){
+				if (this.sprite.currentAnimation != MARIO_WALK_RIGHT_STATE_STAR)
+					this.sprite.setAnimation(MARIO_WALK_RIGHT_STATE_STAR);
+
+				if (this.bJumping) {
+					if (this.sprite.currentAnimation != MARIO_JUMP_RIGHT_STATE_STAR) {
+						this.sprite.setAnimation(MARIO_JUMP_RIGHT_STATE_STAR);
+					}
+				}
+			}
 		}
-		else {
+		else {//MARIO PARADO
 			if (this.state == STATE_MINI) {
 				if (this.sprite.currentAnimation == MARIO_WALK_LEFT || this.sprite.currentAnimation == MARIO_JUMP_LEFT) {
-					if (!this.bJumping)
-						this.sprite.setAnimation(MARIO_STAND_LEFT);
+					if (!this.bJumping) this.sprite.setAnimation(MARIO_STAND_LEFT);
 				}
 				if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_JUMP_RIGHT) {
-					if (!this.bJumping)
-						this.sprite.setAnimation(MARIO_STAND_RIGHT);
+					if (!this.bJumping) this.sprite.setAnimation(MARIO_STAND_RIGHT);
+				}
+			}
+			else if(this.state == STATE_START_MINI){
+				if (this.sprite.currentAnimation == MARIO_WALK_LEFT_STATE_STAR || this.sprite.currentAnimation == MARIO_JUMP_LEFT_STATE_STAR) {
+					if (!this.bJumping) this.sprite.setAnimation(MARIO_STAND_LEFT_STATE_STAR);
+				}
+				if (this.sprite.currentAnimation == MARIO_WALK_RIGHT_STATE_STAR || this.sprite.currentAnimation == MARIO_JUMP_RIGHT_STATE_STAR) {
+					if (!this.bJumping) this.sprite.setAnimation(MARIO_STAND_RIGHT_STATE_STAR);
 				}
 			}
 		}
@@ -219,8 +250,8 @@ Player.prototype.update = function (deltaTime) {
 	}
 	else {
 		// Die
-		if (this.sprite.currentAnimation != MARIO_STAND_DIE) {
-			this.sprite.setAnimation(MARIO_STAND_DIE);
+		if (this.sprite.currentAnimation != MARIO_DIE) {
+			this.sprite.setAnimation(MARIO_DIE);
 		}
 		//Bounce die
 		if (this.bouncing) {
@@ -253,6 +284,10 @@ Player.prototype.update = function (deltaTime) {
 			}
 		}
 	}
+
+	if(keyboard[71]){
+		this.state = STATE_START_MINI;
+	}
 	// Update sprites
 	this.sprite.update(deltaTime);
 }
@@ -264,13 +299,11 @@ Player.prototype.die = function die() {
 	}
 }
 
-Player.prototype.draw = function () {
-	this.sprite.draw();
-}
-
-Player.prototype.collisionBox = function () {
-	var box = new Box(this.sprite.x + 2, this.sprite.y, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height);
-	return box;
+Player.prototype.star = function start(){
+	this.state = STATE_START_MINI;
+	setTimeout(() => {
+		this.state = STATE_MINI;
+	}, 10000);
 }
 
 Player.prototype.jump = function () {
@@ -285,6 +318,12 @@ Player.prototype.jump = function () {
 				this.sprite.setAnimation(MARIO_JUMP_LEFT);
 			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT || this.sprite.currentAnimation == MARIO_STAND_RIGHT)
 				this.sprite.setAnimation(MARIO_JUMP_RIGHT);
+		}
+		if(this.state == STATE_START_MINI){
+			if (this.sprite.currentAnimation == MARIO_WALK_LEFT_STATE_STAR || this.sprite.currentAnimation == MARIO_STAND_LEFT_STATE_STAR)
+				this.sprite.setAnimation(MARIO_JUMP_LEFT_STATE_STAR);
+			if (this.sprite.currentAnimation == MARIO_WALK_RIGHT_STATE_STAR || this.sprite.currentAnimation == MARIO_STAND_RIGHT_STATE_STAR)
+				this.sprite.setAnimation(MARIO_JUMP_RIGHT_STATE_STAR);
 		}
 	}
 }
@@ -401,4 +440,14 @@ Player.prototype.move = function (deltaTime) {
 		}
 	}
 
+}
+
+Player.prototype.draw = function () {
+	if(this.state == STATE_MINI) this.sprite.draw();
+	if(this.state == STATE_START_MINI) this.sprite.draw();
+}
+
+Player.prototype.collisionBox = function () {
+	var box = new Box(this.sprite.x + 2, this.sprite.y, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height);
+	return box;
 }

@@ -15,7 +15,7 @@ function Scene(lives) {
 	// Create entities
 	this.player = new Player(224, 352, this.map, lives);
 
-	this.estrella = new Star(224, 352, this.map);
+	this.estrella = new Star(300, 200, this.map);
 	//max Camara
 	this.maxCameraX = 0;
 
@@ -63,6 +63,10 @@ Scene.prototype.update = function (deltaTime) {
 
 	if (this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
 
+	if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
+		this.player.star();
+		this.estrella.active = false;
+	}
 
 	this.map.bricks.forEach(brick => {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
@@ -117,10 +121,14 @@ Scene.prototype.update = function (deltaTime) {
 	this.enemisGommba.forEach((goomba) => {
 		var colision = goomba.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colision && this.player.live) {
-			if (colision[1] === 'arriba') {
+			if(this.player.state == STATE_START_MINI){
 				goomba.die();
-			} else if (goomba.active && goomba.live) {
-				this.player.die();
+			}else{
+				if (colision[1] === 'arriba') {
+					goomba.die();
+				} else if (goomba.active && goomba.live) {
+					this.player.die();
+				}
 			}
 		}
 		if (goomba.sprite.x >= this.maxCameraX && goomba.sprite.x <= this.maxCameraX + cameraWidth) {
