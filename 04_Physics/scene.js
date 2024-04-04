@@ -153,7 +153,7 @@ Scene.prototype.draw = function () {
 	var context = canvas.getContext("2d");
 
 	// Calculate the position of the camera. The camera follows the player, staying a certain distance away.
-	var cameraX = this.player.sprite.x - canvas.width / 2;
+	var cameraX = this.player.listSprit[this.player.state].x - canvas.width / 2;
 	cameraX = Math.max(0, cameraX); // Don't go beyond the left edge of the map
 	cameraX = Math.min(this.map.map.width * 32 - canvas.width, cameraX); // Don't go beyond the right edge of the map
 
