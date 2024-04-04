@@ -123,7 +123,6 @@ function Player(x, y, map, lives) {
 	spriteStart.addKeyframe(MARIO_JUMP_RIGHT, [16, 80, 16, 16]);
 	spriteStart.addKeyframe(MARIO_JUMP_RIGHT, [96, 80, 16, 16]);
 
-	
 	//big
 	var marioBig = new Texture("imgs/marioBig.png");
 	spriteBig = new Sprite(x, y, 32, 64, 17, marioBig);
@@ -173,7 +172,6 @@ function Player(x, y, map, lives) {
 	this.goingUp = true;
 }
 
-
 Player.prototype.update = function (deltaTime) {
 
 	if (this.live) {
@@ -192,17 +190,9 @@ Player.prototype.update = function (deltaTime) {
 		}
 		else if (keyboard[39]) // KEY_RIGHT
 		{
-			console.log(this.listSprit[this.state].currentAnimation)
-
 			if (this.listSprit[this.state].currentAnimation != MARIO_WALK_RIGHT){
-				console.log('change', MARIO_WALK_RIGHT)
-				console.log('this.state', this.state)
 				this.listSprit[this.state].setAnimation(MARIO_WALK_RIGHT);
-				console.log(this.listSprit[this.state], 'this.listSprit[this.state]')
-
 			}
-				
-
 			if (this.bJumping) {
 				if (this.listSprit[this.state].currentAnimation != MARIO_JUMP_RIGHT) {
 					this.listSprit[this.state].setAnimation(MARIO_JUMP_RIGHT);
@@ -242,9 +232,7 @@ Player.prototype.update = function (deltaTime) {
 				this.jump();
 			}
 		}
-	
 		this.move(deltaTime);
-
 	}
 	else {
 		// Die
@@ -282,7 +270,6 @@ Player.prototype.update = function (deltaTime) {
 			}
 		}
 	}
-
 	if(keyboard[71]){//g
 		this.star();
 	}
@@ -298,17 +285,21 @@ Player.prototype.die = function die() {
 		this.live = false;
 		this.bouncing = true;
 	}
+	if(this.state == STATE_MAX){
+		this.small();
+	}
 }
 
 Player.prototype.star = function start(){
+	const preStatus = this.state
 	this.listSprit[STATE_START_MINI].x = this.listSprit[this.state].x
 	this.listSprit[STATE_START_MINI].y = this.listSprit[this.state].y
-
 	this.state = STATE_START_MINI;
+
 	setTimeout(() => {
-		this.listSprit[STATE_MINI].x = this.listSprit[this.state].x
-		this.listSprit[STATE_MINI].y = this.listSprit[this.state].y
-		this.state = STATE_MINI;
+		this.listSprit[preStatus].x = this.listSprit[this.state].x
+		this.listSprit[preStatus].y = this.listSprit[this.state].y
+		this.state = preStatus;
 	}, 10000);
 }
 
@@ -331,7 +322,6 @@ Player.prototype.jump = function () {
 		this.bJumping = true;
 		this.jumpAngle = 0;
 		this.startY = this.listSprit[this.state].y;
-
 		if (this.listSprit[this.state].currentAnimation == MARIO_WALK_LEFT || this.listSprit[this.state].currentAnimation == MARIO_STAND_LEFT)
 			this.listSprit[this.state].setAnimation(MARIO_JUMP_LEFT);
 		if (this.listSprit[this.state].currentAnimation == MARIO_WALK_RIGHT || this.listSprit[this.state].currentAnimation == MARIO_STAND_RIGHT)
