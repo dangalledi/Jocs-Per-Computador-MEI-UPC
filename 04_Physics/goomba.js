@@ -100,18 +100,20 @@ Goomba.prototype.collisionBox = function () {
 Goomba.prototype.controlFormaBrick = function (ladrillos) {
 	for (var i = 0; i < ladrillos.length; i++) {
 		var brick = ladrillos[i];
-		var col = this.collisionBox().intersectSide(brick.collisionBox());
+		if(brick.activeView){
+			var col = this.collisionBox().intersectSide(brick.collisionBox());
 
-		if (!!col && col[1] === 'abajo') {
-			// If the player is colliding with the brick, move the player to the top of the brick
-			//this.sprite.y = brick.sprite.y - this.sprite.height; //correcta manera paro reobota :c 
-			this.upBrick = true
-		}
-		if (!!col && col[0] === 'derecha') {
-			if (!!col && col[1] != 'abajo') this.sprite.x -= 2;
-		}
-		if (!!col && col[0] === 'izquierda') {
-			if (!!col && col[1] != 'abajo') this.sprite.x += 2;
+			if (!!col && col[1] === 'abajo') {
+				// If the player is colliding with the brick, move the player to the top of the brick
+				//this.sprite.y = brick.sprite.y - this.sprite.height; //correcta manera paro reobota :c 
+				this.upBrick = true
+			}
+			if (!!col && col[0] === 'derecha') {
+				if (!!col && col[1] != 'abajo') this.sprite.x -= 2;
+			}
+			if (!!col && col[0] === 'izquierda') {
+				if (!!col && col[1] != 'abajo') this.sprite.x += 2;
+			}
 		}
 	}
 }

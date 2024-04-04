@@ -72,6 +72,9 @@ Scene.prototype.update = function (deltaTime) {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colisionBrick) {
 			if (colisionBrick[1] === 'abajo' && this.player.live) {
+				if(this.player.state == STATE_MAX || this.player.state == STATE_START_MAX ){
+					brick.clean();
+				}
 				// this.brick.sprite.y -= 0.5; 
 				brick.bouncing = true;
 				// this.player.sprite.y -= 2
@@ -121,7 +124,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.enemisGommba.forEach((goomba) => {
 		var colision = goomba.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colision && this.player.live) {
-			if(this.player.state == STATE_START_MINI){
+			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
 				goomba.die();
 			}else{
 				if (colision[1] === 'arriba') {

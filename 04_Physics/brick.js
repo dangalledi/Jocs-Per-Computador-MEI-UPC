@@ -1,19 +1,22 @@
 
 
 function Brick(x, y) {
-	var brick = new Texture("imgs/fondo.png");
-
+	var brick = new Texture("imgs/brick.png");
 	// Prepare coin sprite & its animation
+	this.activeView = true;
+	this.active = true;
 	this.sprite = new Sprite(x, y, 32, 32, 1, brick);
 
 	this.sprite.addAnimation();
-	this.sprite.addKeyframe(0, [96, 0, 32, 32]);
+	this.sprite.addKeyframe(0, [0, 0, 16, 16]);
+
+	this.sprite.addAnimation();
+	this.sprite.addKeyframe(1, [0, 16, 16, 16]);
 
 	this.originalY = y;
 	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
 	this.bouncing = false;
 }
-
 
 Brick.prototype.update = function update(deltaTime) {
 	if (this.bouncing) {
@@ -40,8 +43,16 @@ Brick.prototype.update = function update(deltaTime) {
 }
 
 Brick.prototype.draw = function draw() {
-	this.sprite.draw();
+	if(this.activeView) this.sprite.draw();
 }
+
+Brick.prototype.clean = function clean() {
+	this.sprite.setAnimation(1);
+	setTimeout(() => {
+		this.activeView = false;
+	}, 125);
+}
+
 
 Brick.prototype.collisionBox = function () {
 	var box = new Box(this.sprite.x + 2, this.sprite.y + 2, this.sprite.x + this.sprite.width - 4, this.sprite.y + this.sprite.height - 4);

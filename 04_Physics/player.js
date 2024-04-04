@@ -10,7 +10,7 @@ const MARIO_DIE = 6;
 const STATE_MINI = 0;
 const STATE_MAX = 1;
 const STATE_START_MINI =2;
-const STATE_START_MAX =2;
+const STATE_START_MAX =3;
 
 var minWalkSpeed = 60;
 var walkAccel = 60;
@@ -355,6 +355,7 @@ Player.prototype.die = function die() {
 }
 
 Player.prototype.star = function start(){
+
 	if(this.state == STATE_MAX){
 		this.listSprit[STATE_START_MAX].x = this.listSprit[this.state].x
 		this.listSprit[STATE_START_MAX].y = this.listSprit[this.state].y
@@ -409,23 +410,25 @@ Player.prototype.controlFormaBrick = function (ladrillos) {
 		var brick = ladrillos[i];
 		var col = this.collisionBox().intersectSide(brick.collisionBox());
 
-		if (!!col && col[1] === 'arriba') {
-			this.bJumping = false;
-			this.downBrick = true
-		}
-		if (!!col && col[1] === 'abajo') {
-			// If the player is colliding with the brick, move the player to the top of the brick
-			this.listSprit[this.state].y = brick.sprite.y - this.listSprit[this.state].height;
-			// this.bJumping = false;
-			this.upBrick = true
-		}
-		if (!!col && col[0] === 'derecha') {
-			if (!!col && col[1] != 'abajo') this.listSprit[this.state].x -= 2;
-			// this.bJumping = false;
-		}
-		if (!!col && col[0] === 'izquierda') {
-			if (!!col && col[1] != 'abajo') this.listSprit[this.state].x += 2;
-			// this.bJumping = false;
+		if(brick.activeView){
+			if (!!col && col[1] === 'arriba') {
+				this.bJumping = false;
+				this.downBrick = true;
+			}
+			if (!!col && col[1] === 'abajo') {
+				// If the player is colliding with the brick, move the player to the top of the brick
+				this.listSprit[this.state].y = brick.sprite.y - this.listSprit[this.state].height;
+				// this.bJumping = false;
+				this.upBrick = true
+			}
+			if (!!col && col[0] === 'derecha') {
+				if (!!col && col[1] != 'abajo') this.listSprit[this.state].x -= 2;
+				// this.bJumping = false;
+			}
+			if (!!col && col[0] === 'izquierda') {
+				if (!!col && col[1] != 'abajo') this.listSprit[this.state].x += 2;
+				// this.bJumping = false;
+			}
 		}
 	}
 }
