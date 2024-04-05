@@ -26,5 +26,3 @@ Box.prototype.intersectSide = function(box2){
 		return datos;
 	}
 }
-
-// 556.5 530 530.5 530

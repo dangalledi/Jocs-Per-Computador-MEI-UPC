@@ -157,6 +157,9 @@ Scene.prototype.update = function (deltaTime) {
 				}
 			}
 		}
+		if(this.enemiKoopa.collisionBox().intersect(goomba.collisionBox()) && this.enemiKoopa.state == DIE_KOOPA ){
+			goomba.die();
+		}
 		if (goomba.sprite.x >= this.maxCameraX && goomba.sprite.x <= this.maxCameraX + cameraWidth) {
 			goomba.move = true;
 		}
@@ -171,6 +174,29 @@ Scene.prototype.update = function (deltaTime) {
 
 	})
 
+	var colision = this.enemiKoopa.collisionBox().intersectSide(this.player.collisionBox());
+	if (!!colision && this.player.live) {
+		if(this.enemiKoopa.state == LIVE_KOOPA){
+			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
+				this.enemiKoopa.die();
+				this.puntaje= this.puntaje + 100;
+			}else{
+				if (colision[1] === 'arriba') {
+					this.enemiKoopa.die();
+					this.puntaje= this.puntaje + 100;
+				}else if (this.enemiKoopa.active && this.enemiKoopa.move) {
+					this.player.die();
+				}
+			}
+		}else if(!this.enemiKoopa.move){
+			this.enemiKoopa.direction = colision[2] == 'derecha'? 'right': 'left';
+			this.enemiKoopa.move= true;
+			
+		}else{
+			if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  this.enemiKoopa.move = false;
+			else{ this.player.die()}
+		}
+	}
 }
 
 Scene.prototype.draw = function () {
