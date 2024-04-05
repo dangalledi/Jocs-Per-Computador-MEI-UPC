@@ -215,7 +215,7 @@ Scene.prototype.draw = function () {
 	// Restore the context
 	context.restore();
 
-	text = "Puntaje: " + this.puntaje + "  Vidas: " + this.player.lives;
+	text = "Puntaje: " + completeNumbre(this.puntaje) + "  Vidas: " + this.player.lives;
 	context.font = "10px Mario";
 	context.fillStyle = "#fff";
 	context.fillText(text, 10, 25);
