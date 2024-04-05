@@ -8,7 +8,6 @@ function Scene(lives) {
 	// Create a deep copy of level01
 	this.level = JSON.parse(JSON.stringify(level01));
 
-
 	// Create tilemap
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], this.level);
 
@@ -16,6 +15,9 @@ function Scene(lives) {
 	this.player = new Player(224, 352, this.map, lives);
 
 	this.estrella = new Star(300, 200, this.map);
+	this.maxPlayer = new HomgoMax(300, 220, this.map);
+	this.liveUpPlayer = new HomgoLive(260, 220, this.map);
+
 	//max Camara
 	this.maxCameraX = 0;
 
@@ -50,6 +52,8 @@ Scene.prototype.update = function (deltaTime) {
 	this.player.update(deltaTime);
 
 	this.estrella.update(deltaTime);
+	this.maxPlayer.update(deltaTime);
+	this.liveUpPlayer.update(deltaTime);
 
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); })
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
@@ -66,6 +70,17 @@ Scene.prototype.update = function (deltaTime) {
 	if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
 		this.player.star();
 		this.estrella.active = false;
+	}
+
+	if(this.maxPlayer.collisionBox().intersect(this.player.collisionBox()) && this.maxPlayer.active){
+		this.player.big();
+		this.maxPlayer.active = false;
+	}
+
+	if(this.liveUpPlayer.collisionBox().intersect(this.player.collisionBox()) && this.liveUpPlayer.active){
+		//this.player.big();
+		this.player.liveUp();
+		this.liveUpPlayer.active = false;
 	}
 
 	this.map.bricks.forEach(brick => {
@@ -87,6 +102,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.map.interrogation.forEach(interrogation => {
 		var colitionInterrogation = interrogation.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colitionInterrogation && colitionInterrogation[1] === 'abajo' && this.player.live) {
+			if(interrogation.recompensa) this.puntaje= this.puntaje +100;
 			interrogation.die();
 			interrogation.bouncing = true;
 		}
@@ -177,8 +193,10 @@ Scene.prototype.draw = function () {
 	// Draw tilemap
 	this.map.draw();
 	this.estrella.draw();
+	this.maxPlayer.draw();
+	this.liveUpPlayer.draw()
 
-	this.enemisGommba.forEach(goomba => { if (goomba.active) goomba.draw(); })
+	this.enemisGommba.forEach(goomba => {goomba.draw();})
 
 	this.player.draw();
 

@@ -5,8 +5,9 @@ function InterrogationBox(x, y)
 {
 	var interrogation = new Texture("imgs/interrogation.png");
 	this.activeView = true;
-	
+
 	this.active = true;
+	this.recompensa =  true;
 	this.originalY = y;
 	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
 	this.bouncing = false;
@@ -41,6 +42,7 @@ InterrogationBox.prototype.update = function update(deltaTime)
 				this.goingUp = false;
 			}
 		} else {
+			//momento en que aparece la recompensa?
 			this.sprite.y += 2;
 			if (this.sprite.y >= this.originalY) {
 				this.sprite.y = this.originalY;
@@ -53,6 +55,7 @@ InterrogationBox.prototype.update = function update(deltaTime)
 }
 
 InterrogationBox.prototype.die = function die(){
+	this.recompensa = false;
 	setTimeout(() => {
 		this.active = false;
 	}, 400);
