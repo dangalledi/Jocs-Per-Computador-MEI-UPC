@@ -18,6 +18,8 @@ function Scene(lives) {
 	this.maxPlayer = new HomgoMax(300, 220, this.map);
 	this.liveUpPlayer = new HomgoLive(260, 220, this.map);
 
+	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
+
 	//max Camara
 	this.maxCameraX = 0;
 
@@ -54,6 +56,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.estrella.update(deltaTime);
 	this.maxPlayer.update(deltaTime);
 	this.liveUpPlayer.update(deltaTime);
+	this.enemiKoopa.update(deltaTime);
 
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); })
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
@@ -198,7 +201,8 @@ Scene.prototype.draw = function () {
 	this.map.draw();
 	this.estrella.draw();
 	this.maxPlayer.draw();
-	this.liveUpPlayer.draw()
+	this.liveUpPlayer.draw();
+	this.enemiKoopa.draw();
 
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
 
