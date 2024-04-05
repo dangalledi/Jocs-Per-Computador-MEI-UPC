@@ -69,11 +69,13 @@ Scene.prototype.update = function (deltaTime) {
 
 	if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
 		this.player.star();
+		this.puntaje= this.puntaje + 1000;
 		this.estrella.active = false;
 	}
 
 	if(this.maxPlayer.collisionBox().intersect(this.player.collisionBox()) && this.maxPlayer.active){
 		this.player.big();
+		this.puntaje= this.puntaje + 1000;
 		this.maxPlayer.active = false;
 	}
 
@@ -142,9 +144,11 @@ Scene.prototype.update = function (deltaTime) {
 		if (!!colision && this.player.live) {
 			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
 				goomba.die();
+				this.puntaje= this.puntaje + 100;
 			}else{
 				if (colision[1] === 'arriba') {
 					goomba.die();
+					this.puntaje= this.puntaje + 100;
 				} else if (goomba.active && goomba.live) {
 					this.player.die();
 				}
