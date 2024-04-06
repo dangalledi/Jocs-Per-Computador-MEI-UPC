@@ -13,7 +13,7 @@ function Scene(lives) {
 	this.level = JSON.parse(JSON.stringify(level01));
 
 	// Create tilemap
-	this.map = new Tilemap(tilesheet, [32, 32], [4, 6], [0, 0], this.level);
+	this.map = new Tilemap(tilesheet, [32, 32], [4, 9], [0, 0], this.level);
 
 	// Create entities
 	this.player = new Player(224, 352, this.map, lives);
