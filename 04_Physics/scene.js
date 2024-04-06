@@ -4,6 +4,10 @@
 function Scene(lives) {
 	// Loading texture to use in a TileMap
 	var tilesheet = new Texture("imgs/fondo.png");
+	this.cantMoney = 0;
+	this.listStar = [];
+	this.listHongoUp = [];
+	this.listHongoMax = [];
 
 	// Create a deep copy of level01
 	this.level = JSON.parse(JSON.stringify(level01));
@@ -14,9 +18,9 @@ function Scene(lives) {
 	// Create entities
 	this.player = new Player(224, 352, this.map, lives);
 
-	this.estrella = new Star(300, 200, this.map);
-	this.maxPlayer = new HomgoMax(300, 220, this.map);
-	this.liveUpPlayer = new HomgoLive(260, 220, this.map);
+	//this.estrella = new Star(300, 200, this.map);
+	//this.maxPlayer = new HomgoMax(300, 220, this.map);
+	//this.liveUpPlayer = new HomgoLive(260, 220, this.map);
 
 	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
 
@@ -53,12 +57,17 @@ Scene.prototype.update = function (deltaTime) {
 	// Update entities
 	this.player.update(deltaTime);
 
-	this.estrella.update(deltaTime);
-	this.maxPlayer.update(deltaTime);
-	this.liveUpPlayer.update(deltaTime);
+	//this.estrella.update(deltaTime);
+	//this.maxPlayer.update(deltaTime);
+	//this.liveUpPlayer.update(deltaTime);
+
+	this.listStar.forEach(star => { star.update(deltaTime); });
+	this.listHongoUp.forEach(hongoUp => { hongoUp.update(deltaTime); });
+	this.listHongoMax.forEach(hongoMax => { hongoMax.update(deltaTime); });
+
 	this.enemiKoopa.update(deltaTime);
 
-	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); })
+	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
 	this.map.interrogation.forEach(interrogation => { interrogation.update(deltaTime); });
 	this.map.coin.forEach(coin => { coin.update(deltaTime); });
@@ -70,23 +79,23 @@ Scene.prototype.update = function (deltaTime) {
 
 	if (this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
 
-	if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
-		this.player.star();
-		this.puntaje= this.puntaje + 1000;
-		this.estrella.active = false;
-	}
+	// if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
+	// 	this.player.star();
+	// 	this.puntaje= this.puntaje + 1000;
+	// 	this.estrella.active = false;
+	// }
 
-	if(this.maxPlayer.collisionBox().intersect(this.player.collisionBox()) && this.maxPlayer.active){
-		this.player.big();
-		this.puntaje= this.puntaje + 1000;
-		this.maxPlayer.active = false;
-	}
+	// if(this.maxPlayer.collisionBox().intersect(this.player.collisionBox()) && this.maxPlayer.active){
+	// 	this.player.big();
+	// 	this.puntaje= this.puntaje + 1000;
+	// 	this.maxPlayer.active = false;
+	// }
 
-	if(this.liveUpPlayer.collisionBox().intersect(this.player.collisionBox()) && this.liveUpPlayer.active){
-		//this.player.big();
-		this.player.liveUp();
-		this.liveUpPlayer.active = false;
-	}
+	// if(this.liveUpPlayer.collisionBox().intersect(this.player.collisionBox()) && this.liveUpPlayer.active){
+	// 	//this.player.big();
+	// 	this.player.liveUp();
+	// 	this.liveUpPlayer.active = false;
+	// }
 
 	this.map.bricks.forEach(brick => {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
@@ -107,7 +116,31 @@ Scene.prototype.update = function (deltaTime) {
 	this.map.interrogation.forEach(interrogation => {
 		var colitionInterrogation = interrogation.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colitionInterrogation && colitionInterrogation[1] === 'abajo' && this.player.live) {
-			if(interrogation.recompensa) this.puntaje= this.puntaje +100;
+			if(interrogation.recompensa) {
+				this.puntaje= this.puntaje +100;
+
+				var random = getRandomInt(3);
+				switch (random) {
+					case 0:
+						var star = new Star(interrogation.sprite.x,interrogation.sprite.y -32, this.map);
+						this.listStar.push(star);
+						break;
+					case 1:
+						var hongo = new HomgoLive(interrogation.sprite.x,interrogation.sprite.y-32, this.map);
+						this.listHongoUp.push(hongo);
+						break;
+					case 2:
+						var hongo = new HomgoMax(interrogation.sprite.x,interrogation.sprite.y-32, this.map);
+						this.listHongoMax.push(hongo);
+						break;
+					default:
+						break;
+				}
+
+				console.log(this.listStar)
+				console.log(this.listHongoUp)
+				console.log(this.listHongoMax)
+			}
 			interrogation.die();
 			interrogation.bouncing = true;
 		}
@@ -117,6 +150,7 @@ Scene.prototype.update = function (deltaTime) {
 		this.map.bricks.forEach((brick) => {
 			if (coin.collisionBox().intersect(brick.collisionBox()) && this.player.live) {
 				if(coin.take){
+					this.cantMoney = this.cantMoney+1;
 					this.puntaje=this.puntaje+100;
 					coin.take = false
 				}
@@ -134,6 +168,7 @@ Scene.prototype.update = function (deltaTime) {
 			}
 			if(coin.take){
 				this.puntaje=this.puntaje+100;
+				this.cantMoney = this.cantMoney+1;
 				coin.take = false
 			}
 			setTimeout(() => {
@@ -225,9 +260,13 @@ Scene.prototype.draw = function () {
 
 	// Draw tilemap
 	this.map.draw();
-	this.estrella.draw();
-	this.maxPlayer.draw();
-	this.liveUpPlayer.draw();
+	// this.estrella.draw();
+	// this.maxPlayer.draw();
+	// this.liveUpPlayer.draw();
+	this.listStar.forEach(star => { star.draw(); });
+	this.listHongoUp.forEach(hongoUp => { hongoUp.draw(); });
+	this.listHongoMax.forEach(hongoMax => { hongoMax.draw(); });
+	
 	this.enemiKoopa.draw();
 
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
@@ -245,7 +284,7 @@ Scene.prototype.draw = function () {
 	// Restore the context
 	context.restore();
 
-	text = "Puntaje: " + completeNumbre(this.puntaje) + "  Vidas: " + this.player.lives;
+	text = "Puntaje: " + completeNumbre(this.puntaje) + "  Monedas: " +this.cantMoney +"  Vidas: " + this.player.lives;
 	context.font = "10px Mario";
 	context.fillStyle = "#fff";
 	context.fillText(text, 10, 25);

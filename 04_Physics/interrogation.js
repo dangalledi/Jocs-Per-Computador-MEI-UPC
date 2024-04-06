@@ -1,13 +1,15 @@
 const INTERROGATION_ACTIVE = 0;
 const INTERROGATION_ENDS = 1;
 
+
 function InterrogationBox(x, y)
 {
 	var interrogation = new Texture("imgs/interrogation.png");
+
 	this.activeView = true;
 
 	this.active = true;
-	this.recompensa =  true;
+	this.recompensa = true;
 	this.originalY = y;
 	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
 	this.bouncing = false;
