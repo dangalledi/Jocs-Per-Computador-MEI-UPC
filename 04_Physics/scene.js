@@ -18,14 +18,12 @@ function Scene(lives) {
 	// Create entities
 	this.player = new Player(224, 352, this.map, lives);
 
-	//this.estrella = new Star(300, 200, this.map);
-	//this.maxPlayer = new HomgoMax(300, 220, this.map);
-	//this.liveUpPlayer = new HomgoLive(260, 220, this.map);
-
-	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
 
 	//max Camara
 	this.maxCameraX = 0;
+	
+	//enemigos
+	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
 
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
@@ -56,18 +54,15 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
-
-	//this.estrella.update(deltaTime);
-	//this.maxPlayer.update(deltaTime);
-	//this.liveUpPlayer.update(deltaTime);
-
+	//poweUp
 	this.listStar.forEach(star => { star.update(deltaTime); });
 	this.listHongoUp.forEach(hongoUp => { hongoUp.update(deltaTime); });
 	this.listHongoMax.forEach(hongoMax => { hongoMax.update(deltaTime); });
-
+	//enemigos
 	this.enemiKoopa.update(deltaTime);
-
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });
+	
+	//mapa
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
 	this.map.interrogation.forEach(interrogation => { interrogation.update(deltaTime); });
 	this.map.coin.forEach(coin => { coin.update(deltaTime); });
@@ -76,26 +71,31 @@ Scene.prototype.update = function (deltaTime) {
 	var cameraWidth = document.getElementById("game-layer").width;
 
 	if (this.maxCameraX > this.player.collisionBox().min_x) this.player.leftColision = true;
-
 	if (this.maxCameraX + cameraWidth < this.player.collisionBox().max_x) this.player.rigthColision = true;
 
-	// if(this.estrella.collisionBox().intersect(this.player.collisionBox()) && this.estrella.active){
-	// 	this.player.star();
-	// 	this.puntaje= this.puntaje + 1000;
-	// 	this.estrella.active = false;
-	// }
+	//coliciones
+	this.listStar.forEach(star => { 
+		if(star.collisionBox().intersect(this.player.collisionBox()) && star.active){
+			this.player.star();
+			this.puntaje= this.puntaje + 1000;
+			star.active = false;
+		}
+	});
 
-	// if(this.maxPlayer.collisionBox().intersect(this.player.collisionBox()) && this.maxPlayer.active){
-	// 	this.player.big();
-	// 	this.puntaje= this.puntaje + 1000;
-	// 	this.maxPlayer.active = false;
-	// }
+	this.listHongoMax.forEach(hongoM => { 
+		if(hongoM.collisionBox().intersect(this.player.collisionBox()) && hongoM.active){
+			this.player.big();
+			this.puntaje= this.puntaje + 1000;
+			hongoM.active = false;
+		}
+	});
 
-	// if(this.liveUpPlayer.collisionBox().intersect(this.player.collisionBox()) && this.liveUpPlayer.active){
-	// 	//this.player.big();
-	// 	this.player.liveUp();
-	// 	this.liveUpPlayer.active = false;
-	// }
+	this.listHongoUp.forEach(hongoUp => { 
+		if(hongoUp.collisionBox().intersect(this.player.collisionBox()) && hongoUp.active){
+			this.player.liveUp();
+			hongoUp.active = false;
+		}
+	});
 
 	this.map.bricks.forEach(brick => {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
@@ -136,10 +136,6 @@ Scene.prototype.update = function (deltaTime) {
 					default:
 						break;
 				}
-
-				console.log(this.listStar)
-				console.log(this.listHongoUp)
-				console.log(this.listHongoMax)
 			}
 			interrogation.die();
 			interrogation.bouncing = true;
@@ -260,17 +256,14 @@ Scene.prototype.draw = function () {
 
 	// Draw tilemap
 	this.map.draw();
-	// this.estrella.draw();
-	// this.maxPlayer.draw();
-	// this.liveUpPlayer.draw();
+	//powerUp
 	this.listStar.forEach(star => { star.draw(); });
 	this.listHongoUp.forEach(hongoUp => { hongoUp.draw(); });
 	this.listHongoMax.forEach(hongoMax => { hongoMax.draw(); });
-	
+	//enemigos
 	this.enemiKoopa.draw();
-
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
-
+	//plyer
 	this.player.draw();
 
 	// Draw text
