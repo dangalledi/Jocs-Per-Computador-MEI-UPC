@@ -8,7 +8,7 @@ function Scene(lives) {
 	this.listStar = [];
 	this.listHongoUp = [];
 	this.listHongoMax = [];
-
+	this.listCoinCub = [];
 	// Create a deep copy of level01
 	this.level = JSON.parse(JSON.stringify(level01));
 
@@ -21,7 +21,7 @@ function Scene(lives) {
 
 	//max Camara
 	this.maxCameraX = 0;
-	
+
 	//enemigos
 	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
 
@@ -58,6 +58,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.listStar.forEach(star => { star.update(deltaTime); });
 	this.listHongoUp.forEach(hongoUp => { hongoUp.update(deltaTime); });
 	this.listHongoMax.forEach(hongoMax => { hongoMax.update(deltaTime); });
+	this.listCoinCub.forEach(coin => {coin.update(deltaTime)})
 	//enemigos
 	this.enemiKoopa.update(deltaTime);
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });
@@ -119,7 +120,7 @@ Scene.prototype.update = function (deltaTime) {
 			if(interrogation.recompensa) {
 				this.puntaje= this.puntaje +100;
 
-				var random = getRandomInt(3);
+				var random = getRandomInt(4);
 				switch (random) {
 					case 0:
 						var star = new Star(interrogation.sprite.x,interrogation.sprite.y -32, this.map);
@@ -133,6 +134,10 @@ Scene.prototype.update = function (deltaTime) {
 						var hongo = new HomgoMax(interrogation.sprite.x,interrogation.sprite.y-32, this.map);
 						this.listHongoMax.push(hongo);
 						break;
+					case 3:
+						var coin = new CoinCub(interrogation.sprite.x+ 8,interrogation.sprite.y-32);
+						this.puntaje = this.puntaje + 200;
+						this.listCoinCub.push(coin)
 					default:
 						break;
 				}
@@ -260,6 +265,7 @@ Scene.prototype.draw = function () {
 	this.listStar.forEach(star => { star.draw(); });
 	this.listHongoUp.forEach(hongoUp => { hongoUp.draw(); });
 	this.listHongoMax.forEach(hongoMax => { hongoMax.draw(); });
+	this.listCoinCub.forEach(coin => {coin.draw()})
 	//enemigos
 	this.enemiKoopa.draw();
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
