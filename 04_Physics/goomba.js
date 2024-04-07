@@ -81,6 +81,9 @@ Goomba.prototype.update = function update(deltaTime) {
 			this.sprite.setAnimation(DIE);
 		}
 	}
+
+	if(this.sprite.y > 409 && this.live) this.active= false;
+
 	// Update sprites
 	this.sprite.update(deltaTime);
 

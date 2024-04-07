@@ -340,6 +340,11 @@ Player.prototype.update = function (deltaTime) {
 	if(keyboard[77]){//m
 		this.big();
 	}
+	if(this.listSprit[this.state].y > 409 && this.live){
+		this.star = STATE_MINI;
+		this.live = false;
+		this.bouncing = true;
+	}
 	// Update listSprit[this.state]s
 	this.listSprit[this.state].update(deltaTime);
 }

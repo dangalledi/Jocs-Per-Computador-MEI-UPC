@@ -23,6 +23,7 @@ function HomgoMax(x, y, map) {
 
 	this.upBrick = false; //piso brick
 	this.down = false;
+
 }
 
 // HomgoMax.prototype.die = function die() {
@@ -60,6 +61,8 @@ HomgoMax.prototype.update = function update(deltaTime) {
 		// 	this.sprite.y -= 2;
 		// }
 	}
+
+	if(this.sprite.y > 409 && this.live) this.active= false;
 	// Update sprites
 	this.sprite.update(deltaTime);
 

@@ -274,7 +274,7 @@ Scene.prototype.draw = function () {
 
 	// Draw text
 	if (!this.player.live) {
-		var text = "Muerte";
+		var text = "GAME OVER";
 		context.font = "50px Mario";
 		var textSize = context.measureText(text);
 		context.fillStyle = "#000";

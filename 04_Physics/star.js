@@ -78,6 +78,7 @@ Star.prototype.update = function update(deltaTime){
             this.jump();
         }
     }
+    if(this.sprite.y > 409 ) this.active= false;
 
 	this.sprite.update(deltaTime);
 }

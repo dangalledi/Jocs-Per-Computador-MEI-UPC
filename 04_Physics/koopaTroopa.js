@@ -95,8 +95,8 @@ KoopaTroopa.prototype.update = function update(deltaTime) {
 			}
 		}
 		this.listSprit[this.state].y += 2;
-		this.map.collisionMoveDown(this.listSprit[this.state])
 
+		this.map.collisionMoveDown(this.listSprit[this.state])
 	}
 	else {
 		// Die
@@ -104,6 +104,9 @@ KoopaTroopa.prototype.update = function update(deltaTime) {
 			this.listSprit[this.state].setAnimation(DIE);
 		}
 	}
+
+	if(this.listSprit[this.state].y > 398) this.active= false;
+
 	// Update sprites
 	this.listSprit[this.state].update(deltaTime);
 
