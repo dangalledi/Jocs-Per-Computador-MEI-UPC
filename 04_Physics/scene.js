@@ -67,6 +67,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.map.bricks.forEach(brick => { brick.update(deltaTime); });
 	this.map.interrogation.forEach(interrogation => { interrogation.update(deltaTime); });
 	this.map.coin.forEach(coin => { coin.update(deltaTime); });
+	if(this.map.flag) this.map.flag.update(deltaTime);
 
 
 	var cameraWidth = document.getElementById("game-layer").width;
