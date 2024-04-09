@@ -12,6 +12,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map)
 	this.bricks = [];
 	this.interrogation = [];
 	this.coin = [];
+	this.poles = [];
 	this.flag;
 }
 
@@ -59,6 +60,11 @@ Tilemap.prototype.draw = function ()
 						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
 						this.coin.push(coin); // Add the brick to the bricks array
 					}
+					if(tileId === 24){
+						var pole = new Pole(this.basePos[0] + this.tileSize[0] * i, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
+						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
+						this.poles.push(pole);
+					}
 					if(tileId === 25){
 						this.flag = new Flag(this.basePos[0] + this.tileSize[0] * i + 16, this.basePos[1] + this.tileSize[1] * j); // Create a new Brick
 						this.map.layers[lay].data[pos] = 0; // Set the tile to 0 (empty)
@@ -76,6 +82,7 @@ Tilemap.prototype.draw = function ()
 	this.interrogation.forEach(interrogation => { interrogation.draw(); });
 	this.coin.forEach(coin => { if (coin.active) coin.draw(); });
 	this.flag.draw();
+	this.poles.forEach((pole)=>{pole.draw()});
 }
 
 // Computes if the left part of a sprite collides with the tilemap.
