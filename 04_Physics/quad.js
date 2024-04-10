@@ -1,7 +1,7 @@
 
 // Quad. Draws a rectangle in a given color.
 
-function Quad(x, y, width, height, color = "white", text='')
+function Quad(x, y, width, height, color = "white", text='', funcion)
 {
 	this.x = x
 	this.y = y
@@ -9,9 +9,24 @@ function Quad(x, y, width, height, color = "white", text='')
 	this.height = height
 	this.color = color
 
+	this.ymin = y -height;
+	this.ymax = y;
+	this.xmin = x;
+	this.xmax = x+width;
+
+
 	this.text = text;
+	this.funcion = function(){
+		funcion()
+	};
 }
 
+Quad.prototype.update = function(deltaTime){
+	if(this.ymin<yClick && this.ymax>yClick && this.xmin<xClick && this.xmax>xClick){
+		this.funcion();
+	}
+	
+}
 
 Quad.prototype.draw = function ()
 {
@@ -27,7 +42,7 @@ Quad.prototype.draw = function ()
 	context.fillStyle = "#293935";
 	var textSize = context.measureText(this.text);
 		//context.fillText(text, 256 - textSize.width/2, 224 + 36);
-	context.fillText(this.text, this.x+ 64-textSize.width/2, this.y+this.height/2);
+	context.fillText(this.text, this.x + this.width / 2 - textSize.width / 2, this.y + this.height / 2 + textSize.actualBoundingBoxAscent / 2);
 }
 
 
