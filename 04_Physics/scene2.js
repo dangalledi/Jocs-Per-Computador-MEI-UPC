@@ -271,6 +271,7 @@ Scene2.prototype.update = function (deltaTime) {
 			this.player.moveRigth = false;
 			restartDatosJuego();
 			goToCreditos();
+			currentStateMario = 0;
 		}
 	}
 	if((this.currentTime / 1000)> TIMEOUT  && this.player.live){

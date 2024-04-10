@@ -23,7 +23,7 @@ var maxRunSpeed = 240;
 function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
-	this.state = STATE_MINI;
+	this.state = currentStateMario;
 	
 	//pole related
 	this.movePlayer = true;
@@ -401,6 +401,7 @@ Player.prototype.die = function die() {
 	if(this.state== STATE_MINI){
 		this.live = false;
 		this.bouncing = true;
+		currentStateMario = 0;
 	}
 	if(this.state == STATE_MAX){
 		this.small();

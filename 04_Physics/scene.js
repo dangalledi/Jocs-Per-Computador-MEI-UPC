@@ -268,6 +268,7 @@ Scene.prototype.update = function (deltaTime) {
 		}else{
 			this.player.moveRigth = false;
 			restartDatosJuego();
+			currentStateMario = this.player.state;
 			goToLevel02(); //SIGUIENTE NIVEL
 		}
 	}

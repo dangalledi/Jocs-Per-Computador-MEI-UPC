@@ -1,6 +1,7 @@
 const prize_pole = {0:8000,1:5000, 2:5000, 3:4000, 4:4000,5:2000,6:2000,7:1000 , 8:1000}
 var win = false;
 var count = 0;
+var currentStateMario = 0;
 
 function restartDatosJuego(){
 	win = false;
@@ -72,11 +73,13 @@ function goToIntrucciones(){
 
 function goToMenu(){
 	escena_actual= ESCENA_PRINCIPAL;
+	vidas= 3;
 	//sceneMenu = new SceneMenu();
 }
 
 function goToCreditos(){
 	escena_actual= ESCENA_CREDITOS;
+	vidas= 3;
 	//sceneMenu = new SceneMenu();
 }
 
@@ -182,7 +185,8 @@ function resumeGame() {
 
 function restartGame() {
 	if(vidas==0){
-		escena_actual= ESCENA_PRINCIPAL;
+		goToMenu();
+		
 	}else{
 		switch (escena_actual) {
 			case ESCENA_PRINCIPAL:
@@ -204,10 +208,10 @@ function restartGame() {
 				sceneMenu = new SceneMenu();
 				break;
 		}
-		isPaused = false;
-		init();
-		frameUpdate(previousTimestamp);
 	}
+	isPaused = false;
+	init();
+	frameUpdate(previousTimestamp);
 }
 
 // Init and launch game loop
