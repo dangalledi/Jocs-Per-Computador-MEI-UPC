@@ -1,6 +1,3 @@
-const prize_pole = {0:8000,1:5000, 2:5000, 3:4000, 4:4000,5:2000,6:2000,7:1000 , 8:1000}
-var win = false;
-var count = 0;
 // Scene. Updates and draws a single scene of the game.
 function Scene(lives) {//85421
 	// Loading texture to use in a TileMap
@@ -273,7 +270,8 @@ Scene.prototype.update = function (deltaTime) {
 			count+=1;
 		}else{
 			this.player.moveRigth = false;
-			//FIN ESCENA.
+			restartDatosJuego();
+			goToLevel02(); //SIGUIENTE NIVEL
 		}
 	}
 	if((this.currentTime / 1000)> TIMEOUT  && this.player.live){

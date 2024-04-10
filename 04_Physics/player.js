@@ -261,7 +261,7 @@ function Player(x, y, map, lives) {
 }
 
 Player.prototype.update = function (deltaTime) {
-
+	console.log('moveRigth', this.moveRigth)
 	if (this.live) {
 		this.controlFormaBrick(this.map.bricks);
 		this.controlFormaBrick(this.map.interrogation);

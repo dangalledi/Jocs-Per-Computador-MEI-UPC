@@ -1,4 +1,14 @@
+const prize_pole = {0:8000,1:5000, 2:5000, 3:4000, 4:4000,5:2000,6:2000,7:1000 , 8:1000}
+var win = false;
+var count = 0;
 
+function restartDatosJuego(){
+	win = false;
+	count = 0;
+}
+var vidas= 3;//aun no
+var monedas = 0;
+var puntaje =0;
 // Main class. Executes the game loop, redrawing the scene as needed.
 
 const FRAME_RATE = 60;
@@ -12,7 +22,6 @@ const ESCENA_LEVEL02 = 3;
 
 var escena_actual = 0
 
-var scene = new Scene(3);//no se si dejarlo inicialmenre null
 var previousTimestamp;
 var keyboard = [];
 var xClick;
@@ -21,6 +30,8 @@ var interacted;
 var isPaused = false;
 
 var sceneMenu = new SceneMenu();
+var scene = new Scene(3);//no se si dejarlo inicialmenre null
+var scene2 = new Scene2(3);//no se si dejarlo inicialmenre null
 var intrucciones = new Intrucciones();
 // Control keyboard events
 
@@ -35,16 +46,21 @@ function keyDown(keycode)
 		isPaused = !isPaused;
 	}
 	if(keycode.which === 49) {//1
-		escena_actual= ESCENA_PRINCIPAL
+		goToLevel01();
 	}
 	if(keycode.which === 50) {// 2
-		goToLevel01();
+		goToLevel02();
 	}
 }
 
 function goToLevel01(){
 	escena_actual= ESCENA_LEVEL01;
 	scene = new Scene(3);
+}
+
+function goToLevel02(){
+	escena_actual= ESCENA_LEVEL02;
+	scene2 = new Scene2(3);
 }
 
 function goToIntrucciones(){
@@ -102,6 +118,9 @@ function frameUpdate(timestamp){
 				case ESCENA_LEVEL01:
 					scene.update(TIME_PER_FRAME);
 					break;
+				case ESCENA_LEVEL02:
+					scene2.update(TIME_PER_FRAME);
+					break;
 				default:
 					sceneMenu.update(TIME_PER_FRAME);
 					break;
@@ -120,6 +139,9 @@ function frameUpdate(timestamp){
 				break
 			case ESCENA_LEVEL01:
 				scene.draw();
+				break;
+			case ESCENA_LEVEL02:
+				scene2.draw();
 				break;
 			default:
 				sceneMenu.draw();
@@ -155,6 +177,9 @@ function restartGame(lives) {
 				break;
 			case ESCENA_LEVEL01:
 				scene = new Scene(lives);
+				break;
+			case ESCENA_LEVEL02:
+				scene2 = new Scene2(lives);
 				break;
 			case INTRUCCIONES:
 				intrucciones = new Intrucciones();
