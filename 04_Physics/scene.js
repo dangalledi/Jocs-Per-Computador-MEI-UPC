@@ -1,7 +1,8 @@
-
-
+const prize_pole = {0:8000,1:5000, 2:5000, 3:4000, 4:4000,5:2000,6:2000,7:1000 , 8:1000}
+var win = false;
+var count = 0;
 // Scene. Updates and draws a single scene of the game.
-function Scene(lives) {
+function Scene(lives) {//85421
 	// Loading texture to use in a TileMap
 	var tilesheet = new Texture("imgs/fondo.png");
 	this.cantMoney = 0;
@@ -183,11 +184,11 @@ Scene.prototype.update = function (deltaTime) {
 	this.enemisGommba.forEach((goomba) => {
 		var colision = goomba.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colision && this.player.live) {
-			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
+			if((this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX) && goomba.live){
 				goomba.die();
 				this.puntaje= this.puntaje + 100;
 			}else{
-				if (colision[1] === 'arriba') {
+				if (colision[1] === 'arriba'  && goomba.live) {
 					goomba.die();
 					this.puntaje= this.puntaje + 100;
 				} else if (goomba.active && goomba.live) {
@@ -234,6 +235,35 @@ Scene.prototype.update = function (deltaTime) {
 			if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  this.enemiKoopa.move = false;
 			else{ this.player.die()}
 		}
+	}
+	this.map.poles.forEach((pole, index)=>{
+		if(pole.collisionBox().intersect(this.player.collisionBox())){
+			this.player.movePlayer = false;
+			if(this.player.prize){
+				this.puntaje = this.puntaje + prize_pole[index];
+				this.player.prize = false;
+			}
+			if(index<8){
+				this.player.listSprit[this.player.state].x = pole.sprite.x
+				setTimeout(() => {
+					this.player.listSprit[this.player.state].y = this.player.listSprit[this.player.state].y +2
+				}, 100);
+			}
+			if(index==8){
+				win= true;
+			}
+		}
+	})
+
+	if(win){
+		//console.log(this.player.listSprit[this.player.state].x)
+		if(count<80){
+			this.player.moveRigth = true;
+			count+=1;
+		}else{
+			this.player.moveRigth = false;
+		}
+		
 	}
 }
 
@@ -285,7 +315,7 @@ Scene.prototype.draw = function () {
 	// Restore the context
 	context.restore();
 
-	text = "Puntaje: " + completeNumbre(this.puntaje) + "  Monedas: " +this.cantMoney +"  Vidas: " + this.player.lives;
+	text = "Puntaje: " + completeNumbre(this.puntaje, 6) + "  Monedas: " +this.cantMoney +"  Vidas: " + this.player.lives;
 	context.font = "10px Mario";
 	context.fillStyle = "#fff";
 	context.fillText(text, 10, 25);

@@ -2,6 +2,6 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max );
 }
 
-function completeNumbre(number){
-    return "0".repeat(6 - number.toString().length) + number.toString()
+function completeNumbre(number, max){
+    return "0".repeat(max - number.toString().length) + number.toString()
 }

@@ -24,6 +24,11 @@ function Player(x, y, map, lives) {
 	var mario = new Texture("imgs/mario.png");
 	this.state = STATE_MINI;
 
+	//pole related
+	this.movePlayer = true;
+	this.moveRigth = false;
+	this.prize = true;
+
 	// Set attributes for VIDAS y activo
 	this.lives=lives;
 	this.live = true;
@@ -241,8 +246,15 @@ Player.prototype.update = function (deltaTime) {
 	if (this.live) {
 		this.controlFormaBrick(this.map.bricks);
 		this.controlFormaBrick(this.map.interrogation);
+		
+		if(this.moveRigth){
+			if (this.listSprit[this.state].currentAnimation != MARIO_WALK_RIGHT){
+				this.listSprit[this.state].setAnimation(MARIO_WALK_RIGHT);
+			}
+			this.listSprit[this.state].x +=2;
+		}
 
-		if (keyboard[37]) // KEY_LEFT
+		if (keyboard[37] && this.movePlayer) // KEY_LEFT
 		{
 			if (this.listSprit[this.state].currentAnimation != MARIO_WALK_LEFT)
 				this.listSprit[this.state].setAnimation(MARIO_WALK_LEFT);
@@ -252,7 +264,7 @@ Player.prototype.update = function (deltaTime) {
 				}
 			}
 		}
-		else if (keyboard[39]) // KEY_RIGHT
+		else if (keyboard[39] && this.movePlayer) // KEY_RIGHT
 		{
 			if (this.listSprit[this.state].currentAnimation != MARIO_WALK_RIGHT){
 				this.listSprit[this.state].setAnimation(MARIO_WALK_RIGHT);
@@ -413,7 +425,7 @@ Player.prototype.small = function small(){
 Player.prototype.jump = function () {
 	this.upBrick = false
 	// Check arrow up key. If pressed, jump.
-	if (keyboard[32]) {
+	if (keyboard[32]  && this.movePlayer) {
 		this.bJumping = true;
 		this.jumpAngle = 0;
 		this.startY = this.listSprit[this.state].y;
@@ -457,7 +469,7 @@ Player.prototype.move = function (deltaTime) {
 
 	var accel = 0;
 
-	if (keyboard[37] || keyboard[39]) {
+	if ((keyboard[37] || keyboard[39]) && this.movePlayer) {
 		// Pressing move buttons
 		if (keyboard[37] && (this.speed > -minWalkSpeed))
 			this.speed = -minWalkSpeed;
@@ -504,7 +516,7 @@ Player.prototype.move = function (deltaTime) {
 		this.listSprit[this.state].x = proxPosX
 	}
 	// Apply acceleration to current speed
-	if (keyboard[37] || keyboard[39]) {
+	if ((keyboard[37] || keyboard[39]) && this.movePlayer) {
 		this.speed = this.speed + accel * deltaTime / 1000.0;
 
 		// Respect maximum speeds
