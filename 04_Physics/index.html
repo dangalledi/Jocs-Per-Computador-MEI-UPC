@@ -6,6 +6,23 @@
 		font-family: 'Mario';
 		src: url('fonts/super-mario-bros-nes.ttf');
 	}
+	body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 75vh;
+        margin: 0;
+    }
+	h1 {
+        font-family: 'Mario', sans-serif;
+        color: dimgray;
+        text-align: center;
+    }
+	#game-layer {
+        display: block;
+        margin: 0 auto;
+    }
 </style>
 
 <head>
@@ -20,7 +37,6 @@
 	<h1> Mario </h1>
 
 	<!-- Canvas -->
-	<!-- <canvas id="game-layer" width="1300" height="448"></canvas> -->
 	<canvas id="game-layer" width="512" height="448"></canvas>
 
 	<!-- Load levels -->

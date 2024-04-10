@@ -93,8 +93,10 @@ function click(event)
 {
 	var canvas = document.getElementById("game-layer");
 	var rect = canvas.getBoundingClientRect(); // Obtiene la posición del canvas
-    xClick = event.clientX - rect.left; // Coordenada X del clic en el canvas
-    yClick = event.clientY - rect.top - 32; // Coordenada Y del clic en el canvas
+	if(escena_actual == ESCENA_PRINCIPAL || escena_actual == ESCENA_CREDITOS || escena_actual == INTRUCCIONES){
+		xClick = event.clientX - rect.left; // Coordenada X del clic en el canvas
+		yClick = event.clientY - rect.top - 32; // Coordenada Y del clic en el canvas
+	}
 	interacted = true;
 }
 

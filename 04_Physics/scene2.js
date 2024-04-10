@@ -21,17 +21,24 @@ function Scene2(lives) {//85421
 	this.maxCameraX = 0;
 
 	//enemigos
-	this.enemiKoopa = new KoopaTroopa(58, 260, this.map);
+	this.enemiskoopa = [];
+	this.enemiskoopa[0] =new KoopaTroopa(58, 260, this.map);
+	this.enemiskoopa[1] = new KoopaTroopa(1280, 200, this.map);
 
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
 	this.enemisGommba[1] = new Goomba(704, 352, this.map);
-	this.enemisGommba[2] = new Goomba(640, 352, this.map);
+	this.enemisGommba[2] = new Goomba(800, 352, this.map);
 	this.enemisGommba[3] = new Goomba(960, 352, this.map);
 	this.enemisGommba[4] = new Goomba(1280, 352, this.map);
 	this.enemisGommba[5] = new Goomba(1600, 352, this.map);
 	this.enemisGommba[6] = new Goomba(1632, 352, this.map);
 	this.enemisGommba[7] = new Goomba(512, 20, this.map);
+	this.enemisGommba[8] = new Goomba(2500, 20, this.map);
+	this.enemisGommba[9] = new Goomba(512, 70, this.map);
+	this.enemisGommba[10] = new Goomba(2000, 20, this.map);
+	this.enemisGommba[11] = new Goomba(1800, 80, this.map);
+	this.enemisGommba[12] = new Goomba(1700, 20, this.map);
 
 	// Prepare sounds
 	this.music = AudioFX('sounds/01.Ground_Theme.mp3', { loop: true });
@@ -61,7 +68,7 @@ Scene2.prototype.update = function (deltaTime) {
 	this.listCoinCub.forEach(coin => {coin.update(deltaTime)})
 	
 	//enemigos
-	this.enemiKoopa.update(deltaTime);
+	this.enemiskoopa.forEach(koopa => { koopa.update(deltaTime); });
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });
 	
 	//mapa
@@ -213,38 +220,42 @@ Scene2.prototype.update = function (deltaTime) {
 				}
 			}
 		}
-		if(this.enemiKoopa.collisionBox().intersect(goomba.collisionBox()) && this.enemiKoopa.state == DIE_KOOPA ){
-			goomba.die();
-		}
+		this.enemiskoopa.forEach((koopa) =>{
+			if(koopa.collisionBox().intersect(goomba.collisionBox()) && koopa.state == DIE_KOOPA ){
+				goomba.die();
+			}
+		})
 		if (goomba.sprite.x >= this.maxCameraX && goomba.sprite.x <= this.maxCameraX + cameraWidth) {
 			goomba.move = true;
 		}
 
 	})
-	
-	var colision = this.enemiKoopa.collisionBox().intersectSide(this.player.collisionBox());
-	if (!!colision && this.player.live) {
-		if(this.enemiKoopa.state == LIVE_KOOPA){
-			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
-				this.enemiKoopa.die();
-				puntaje=puntaje+100;
-			}else{
-				if (colision[1] === 'arriba') {
-					this.enemiKoopa.die();
-					puntaje=puntaje+100;
-				}else if (this.enemiKoopa.active && this.enemiKoopa.move) {
-					this.player.die();
+
+	this.enemiskoopa.forEach(koopa =>{
+		var colision = koopa.collisionBox().intersectSide(this.player.collisionBox());
+		if (!!colision && this.player.live) {
+			if(koopa.state == LIVE_KOOPA){
+				if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
+					koopa.die();
+					puntaje= puntaje + 100;
+				}else{
+					if (colision[1] === 'arriba') {
+						koopa.die();
+						puntaje= puntaje + 100;
+					}else if (koopa.active && koopa.move) {
+						this.player.die();
+					}
 				}
+			}else if(!koopa.move){
+				koopa.direction = colision[2] == 'derecha'? 'right': 'left';
+				koopa.move= true;
+				
+			}else{
+				if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  koopa.move = false;
+				else{ this.player.die()}
 			}
-		}else if(!this.enemiKoopa.move){
-			this.enemiKoopa.direction = colision[2] == 'derecha'? 'right': 'left';
-			this.enemiKoopa.move= true;
-			
-		}else{
-			if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  this.enemiKoopa.move = false;
-			else{ this.player.die()}
 		}
-	}
+	})
 	this.map.poles.forEach((pole, index)=>{
 		if(pole.collisionBox().intersect(this.player.collisionBox())){
 			this.player.movePlayer = false;
@@ -312,7 +323,7 @@ Scene2.prototype.draw = function () {
 	this.listHongoMax.forEach(hongoMax => { hongoMax.draw(); });
 	this.listCoinCub.forEach(coin => {coin.draw()})
 	//enemigos
-	this.enemiKoopa.draw();
+	this.enemiskoopa.forEach((koopa)=>{koopa.draw()});
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
 	//plyer
 	this.player.draw();

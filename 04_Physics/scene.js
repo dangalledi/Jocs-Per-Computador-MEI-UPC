@@ -22,7 +22,7 @@ function Scene() {//85421
 	//enemigos
 	this.enemiskoopa = [];
 	this.enemiskoopa[0] = new KoopaTroopa(300, 200, this.map);
-	this.enemiskoopa[1] = new KoopaTroopa(200, 200, this.map);
+	this.enemiskoopa[1] = new KoopaTroopa(1280, 200, this.map);
 
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
@@ -33,6 +33,11 @@ function Scene() {//85421
 	this.enemisGommba[5] = new Goomba(1600, 352, this.map);
 	this.enemisGommba[6] = new Goomba(1632, 352, this.map);
 	this.enemisGommba[7] = new Goomba(512, 20, this.map);
+	this.enemisGommba[8] = new Goomba(2500, 20, this.map);
+	this.enemisGommba[9] = new Goomba(512, 70, this.map);
+	this.enemisGommba[10] = new Goomba(2000, 20, this.map);
+	this.enemisGommba[11] = new Goomba(1800, 80, this.map);
+	this.enemisGommba[12] = new Goomba(1700, 20, this.map);
 
 	// Prepare sounds
 	this.music = AudioFX('sounds/01.Ground_Theme.mp3', { loop: true });
