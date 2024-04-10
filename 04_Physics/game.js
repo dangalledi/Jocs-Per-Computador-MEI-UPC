@@ -3,6 +3,7 @@
 
 const FRAME_RATE = 60;
 const TIME_PER_FRAME = 1000 / FRAME_RATE;
+const TIMEOUT = 200;
 
 var scene = new Scene(3);
 var previousTimestamp;

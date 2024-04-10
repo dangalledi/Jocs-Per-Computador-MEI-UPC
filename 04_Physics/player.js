@@ -4,8 +4,9 @@ const MARIO_WALK_LEFT = 2;
 const MARIO_WALK_RIGHT = 3;
 const MARIO_JUMP_LEFT = 4;
 const MARIO_JUMP_RIGHT = 5;
+const MARIO_DOWN_POLE_RIGHT = 6;
 
-const MARIO_DIE = 6;
+const MARIO_DIE = 7;
 
 const STATE_MINI = 0;
 const STATE_MAX = 1;
@@ -23,11 +24,12 @@ function Player(x, y, map, lives) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 	this.state = STATE_MINI;
-
+	
 	//pole related
 	this.movePlayer = true;
 	this.moveRigth = false;
 	this.prize = true;
+	this.movePole = false;
 
 	// Set attributes for VIDAS y activo
 	this.lives=lives;
@@ -66,6 +68,9 @@ function Player(x, y, map, lives) {
 
 	sprite.addAnimation();
 	sprite.addKeyframe(MARIO_JUMP_RIGHT, [16, 16, 16, 16]);
+
+	sprite.addAnimation();
+	sprite.addKeyframe(MARIO_DOWN_POLE_RIGHT, [64, 0, 16, 16]);
 
 	sprite.addAnimation();
 	sprite.addKeyframe(MARIO_DIE, [32, 16, 16, 16]);
@@ -129,6 +134,12 @@ function Player(x, y, map, lives) {
 	spriteStart.addKeyframe(MARIO_JUMP_RIGHT, [16, 80, 16, 16]);
 	spriteStart.addKeyframe(MARIO_JUMP_RIGHT, [96, 80, 16, 16]);
 
+	spriteStart.addAnimation();
+	spriteStart.addKeyframe(MARIO_DOWN_POLE_RIGHT, [64, 0, 16, 16]);
+	spriteStart.addKeyframe(MARIO_DOWN_POLE_RIGHT, [128, 0, 16, 16]);
+	spriteStart.addKeyframe(MARIO_DOWN_POLE_RIGHT, [64, 64, 16, 16]);
+	spriteStart.addKeyframe(MARIO_DOWN_POLE_RIGHT, [128, 64, 16, 16]);
+
 	//big
 	var marioBig = new Texture("imgs/marioBig.png");
 	spriteBig = new Sprite(x, y, 32, 64, 17, marioBig);
@@ -154,6 +165,9 @@ function Player(x, y, map, lives) {
 
 	spriteBig.addAnimation();
 	spriteBig.addKeyframe(MARIO_JUMP_RIGHT, [80, 0, 16, 32]);
+
+	spriteBig.addAnimation();
+	spriteBig.addKeyframe(MARIO_DOWN_POLE_RIGHT, [0, 126, 16, 32]);
 
 	//Start
 	spriteStartBig = new Sprite(x, y, 32, 64, 17, marioBig);
@@ -214,6 +228,11 @@ function Player(x, y, map, lives) {
 	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [80, 64, 16, 32]);
 	spriteStartBig.addKeyframe(MARIO_JUMP_RIGHT, [192, 64, 16, 32]);
 
+	spriteStartBig.addAnimation();
+	spriteStartBig.addKeyframe(MARIO_DOWN_POLE_RIGHT, [0, 126, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_DOWN_POLE_RIGHT, [16, 126, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_DOWN_POLE_RIGHT, [32, 126, 16, 32]);
+	spriteStartBig.addKeyframe(MARIO_DOWN_POLE_RIGHT, [48, 126, 16, 32]);
 
 	sprite.setAnimation(MARIO_STAND_RIGHT);
 	spriteStart.setAnimation(MARIO_STAND_RIGHT);
@@ -246,6 +265,14 @@ Player.prototype.update = function (deltaTime) {
 	if (this.live) {
 		this.controlFormaBrick(this.map.bricks);
 		this.controlFormaBrick(this.map.interrogation);
+		
+		if(this.movePole){
+			if (this.listSprit[this.state].currentAnimation != MARIO_DOWN_POLE_RIGHT){
+				this.listSprit[this.state].setAnimation(MARIO_DOWN_POLE_RIGHT);
+			}
+
+			this.listSprit[this.state].y +=2;
+		}
 		
 		if(this.moveRigth){
 			if (this.listSprit[this.state].currentAnimation != MARIO_WALK_RIGHT){
@@ -363,6 +390,13 @@ Player.prototype.update = function (deltaTime) {
 
 Player.prototype.liveUp = function liveUp(){
 	this.lives = this.lives + 1;
+}
+
+Player.prototype.timeOut = function timeOut() {
+	if(this.timeout){
+		this.state= STATE_MINI;
+	}
+	this.die();
 }
 
 Player.prototype.die = function die() {

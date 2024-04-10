@@ -242,32 +242,34 @@ Scene.prototype.update = function (deltaTime) {
 			if(this.player.prize){
 				this.puntaje = this.puntaje + prize_pole[index];
 				this.player.prize = false;
+				this.player.movePole = true;
 			}
 			if(index<8){
-				this.player.listSprit[this.player.state].x = pole.sprite.x
-				setTimeout(() => {
-					this.player.listSprit[this.player.state].y = this.player.listSprit[this.player.state].y +2
-				}, 100);
+				this.player.listSprit[this.player.state].x = pole.sprite.x - 8
 			}
 			if(index==8){
+				this.player.movePole = false;
 				win= true;
 			}
 		}
 	})
 
 	if(win){
-		//console.log(this.player.listSprit[this.player.state].x)
-		if(count<80){
+		if(count<94){
 			this.player.moveRigth = true;
 			count+=1;
 		}else{
 			this.player.moveRigth = false;
+			//FIN ESCENA.
 		}
-		
+	}
+	if((this.currentTime / 1000)> TIMEOUT  && this.player.live){
+		this.player.timeOut();
 	}
 }
 
 Scene.prototype.draw = function () {
+	//console.log(this.currentTime)
 	// Get canvas object, then its context
 	var canvas = document.getElementById("game-layer");
 	var context = canvas.getContext("2d");
@@ -316,9 +318,11 @@ Scene.prototype.draw = function () {
 	context.restore();
 
 	text = "Puntaje: " + completeNumbre(this.puntaje, 6) + "  Monedas: " +this.cantMoney +"  Vidas: " + this.player.lives;
+	text2 ="Time: "+ completeNumbre(TIMEOUT - Math.floor(this.currentTime / 1000), 3) + " seconds"
 	context.font = "10px Mario";
 	context.fillStyle = "#fff";
 	context.fillText(text, 10, 25);
+	context.fillText(text2, 10, 40);
 }
 
 
