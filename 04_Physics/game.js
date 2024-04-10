@@ -181,8 +181,8 @@ function resumeGame() {
 }
 
 function restartGame() {
-	if(lives==0){
-		pauseGame()
+	if(vidas==0){
+		escena_actual= ESCENA_PRINCIPAL;
 	}else{
 		switch (escena_actual) {
 			case ESCENA_PRINCIPAL:
