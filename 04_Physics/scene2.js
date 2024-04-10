@@ -45,7 +45,6 @@ function Scene2(lives) {//85421
 	// Store current time
 	this.currentTime = 0
 
-	this.puntaje = 0;
 }
 
 
@@ -96,7 +95,7 @@ Scene2.prototype.update = function (deltaTime) {
 	this.listStar.forEach(star => { 
 		if(star.collisionBox().intersect(this.player.collisionBox()) && star.active){
 			this.player.star();
-			this.puntaje= this.puntaje + 1000;
+			puntaje= puntaje + 1000;
 			star.active = false;
 		}
 	});
@@ -104,7 +103,7 @@ Scene2.prototype.update = function (deltaTime) {
 	this.listHongoMax.forEach(hongoM => { 
 		if(hongoM.collisionBox().intersect(this.player.collisionBox()) && hongoM.active){
 			this.player.big();
-			this.puntaje= this.puntaje + 1000;
+			puntaje= puntaje + 1000;
 			hongoM.active = false;
 		}
 	});
@@ -140,7 +139,7 @@ Scene2.prototype.update = function (deltaTime) {
 		var colitionInterrogation = interrogation.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colitionInterrogation && colitionInterrogation[1] === 'abajo' && this.player.live) {
 			if(interrogation.recompensa) {
-				this.puntaje= this.puntaje +100;
+				puntaje= puntaje +100;
 
 				var random = getRandomInt(4);
 				switch (random) {
@@ -158,7 +157,7 @@ Scene2.prototype.update = function (deltaTime) {
 						break;
 					case 3:
 						var coin = new CoinCub(interrogation.sprite.x+ 8,interrogation.sprite.y-32);
-						this.puntaje = this.puntaje + 200;
+						puntaje = puntaje + 200;
 						this.listCoinCub.push(coin)
 					default:
 						break;
@@ -173,8 +172,8 @@ Scene2.prototype.update = function (deltaTime) {
 		this.map.bricks.forEach((brick) => {
 			if (coin.collisionBox().intersect(brick.collisionBox()) && this.player.live) {
 				if(coin.take){
-					this.cantMoney = this.cantMoney+1;
-					this.puntaje=this.puntaje+100;
+					monedas = monedas+1;
+					puntaje=puntaje+100;
 					coin.take = false
 				}
 				if (interacted && coin.active){
@@ -190,8 +189,8 @@ Scene2.prototype.update = function (deltaTime) {
 				this.coinSound.play();
 			}
 			if(coin.take){
-				this.puntaje=this.puntaje+100;
-				this.cantMoney = this.cantMoney+1;
+				monedas = monedas+1;
+				puntaje=puntaje+100;
 				coin.take = false
 			}
 			setTimeout(() => {
@@ -205,11 +204,11 @@ Scene2.prototype.update = function (deltaTime) {
 		if (!!colision && this.player.live) {
 			if((this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX) && goomba.live){
 				goomba.die();
-				this.puntaje= this.puntaje + 100;
+				puntaje=puntaje+100;
 			}else{
 				if (colision[1] === 'arriba'  && goomba.live) {
 					goomba.die();
-					this.puntaje= this.puntaje + 100;
+					puntaje=puntaje+100;
 				} else if (goomba.active && goomba.live) {
 					this.player.die();
 				}
@@ -229,11 +228,11 @@ Scene2.prototype.update = function (deltaTime) {
 		if(this.enemiKoopa.state == LIVE_KOOPA){
 			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
 				this.enemiKoopa.die();
-				this.puntaje= this.puntaje + 100;
+				puntaje=puntaje+100;
 			}else{
 				if (colision[1] === 'arriba') {
 					this.enemiKoopa.die();
-					this.puntaje= this.puntaje + 100;
+					puntaje=puntaje+100;
 				}else if (this.enemiKoopa.active && this.enemiKoopa.move) {
 					this.player.die();
 				}
@@ -251,7 +250,7 @@ Scene2.prototype.update = function (deltaTime) {
 		if(pole.collisionBox().intersect(this.player.collisionBox())){
 			this.player.movePlayer = false;
 			if(this.player.prize){
-				this.puntaje = this.puntaje + prize_pole[index];
+				puntaje=puntaje + prize_pole[index];
 				this.player.prize = false;
 				this.player.movePole = true;
 			}
@@ -329,7 +328,7 @@ Scene2.prototype.draw = function () {
 	// Restore the context
 	context.restore();
 
-	text = "Puntaje: " + completeNumbre(this.puntaje, 6) + "  Monedas: " +this.cantMoney +"  Vidas: " + this.player.lives;
+	text = "Puntaje: " + completeNumbre(puntaje, 6) + "  Monedas: " +monedas +"  Vidas: " + vidas;
 	text2 ="Time: "+ completeNumbre(TIMEOUT - Math.floor(this.currentTime / 1000), 3) + " seconds"
 	context.font = "10px Mario";
 	context.fillStyle = "#fff";

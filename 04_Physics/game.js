@@ -30,8 +30,8 @@ var interacted;
 var isPaused = false;
 
 var sceneMenu = new SceneMenu();
-var scene = new Scene(3);//no se si dejarlo inicialmenre null
-var scene2 = new Scene2(3);//no se si dejarlo inicialmenre null
+var scene = new Scene();//no se si dejarlo inicialmenre null
+var scene2 = new Scene2();//no se si dejarlo inicialmenre null
 var intrucciones = new Intrucciones();
 // Control keyboard events
 
@@ -55,12 +55,12 @@ function keyDown(keycode)
 
 function goToLevel01(){
 	escena_actual= ESCENA_LEVEL01;
-	scene = new Scene(3);
+	scene = new Scene();
 }
 
 function goToLevel02(){
 	escena_actual= ESCENA_LEVEL02;
-	scene2 = new Scene2(3);
+	scene2 = new Scene2();
 }
 
 function goToIntrucciones(){
@@ -167,7 +167,7 @@ function resumeGame() {
     frameUpdate(previousTimestamp);
 }
 
-function restartGame(lives) {
+function restartGame() {
 	if(lives==0){
 		pauseGame()
 	}else{
@@ -176,10 +176,10 @@ function restartGame(lives) {
 				sceneMenu = new SceneMenu();
 				break;
 			case ESCENA_LEVEL01:
-				scene = new Scene(lives);
+				scene = new Scene();
 				break;
 			case ESCENA_LEVEL02:
-				scene2 = new Scene2(lives);
+				scene2 = new Scene2();
 				break;
 			case INTRUCCIONES:
 				intrucciones = new Intrucciones();

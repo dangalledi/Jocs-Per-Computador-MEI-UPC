@@ -20,7 +20,7 @@ var releaseDecel = 360;
 var maxWalkSpeed = 120;
 var maxRunSpeed = 240;
 
-function Player(x, y, map, lives) {
+function Player(x, y, map) {
 	// Loading spritesheets
 	var mario = new Texture("imgs/mario.png");
 	this.state = STATE_MINI;
@@ -32,7 +32,6 @@ function Player(x, y, map, lives) {
 	this.movePole = false;
 
 	// Set attributes for VIDAS y activo
-	this.lives=lives;
 	this.live = true;
 	
 	this.upBrick = false; //piso brick
@@ -367,9 +366,9 @@ Player.prototype.update = function (deltaTime) {
 		else if(this.down){
 			if(this.listSprit[this.state].y < 500)	this.listSprit[this.state].y += 3;
 			else{
-				this.lives = this.lives-1;
+				vidas = vidas-1;
 				pauseGame();
-				restartGame(this.lives)
+				restartGame()
 			}
 		}
 	}
@@ -389,7 +388,7 @@ Player.prototype.update = function (deltaTime) {
 }
 
 Player.prototype.liveUp = function liveUp(){
-	this.lives = this.lives + 1;
+	vidas = vidas + 1;
 }
 
 Player.prototype.timeOut = function timeOut() {
