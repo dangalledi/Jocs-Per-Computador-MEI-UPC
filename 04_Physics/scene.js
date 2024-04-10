@@ -39,8 +39,10 @@ function Scene(lives) {//85421
 	// Prepare sounds
 	this.music = AudioFX('sounds/01.Ground_Theme.mp3', { loop: true });
 	this.jumpSound = AudioFX('sounds/smb_jump-small.wav');
+	this.jumpSoundSuper = AudioFX('sounds/smb_jump-super.wav');
 	this.coinSound = AudioFX('sounds/smb_coin.wav');
 	this.brickSound = AudioFX('sounds/smb_bump.wav');
+	this.breakblock = AudioFX('sounds/smb_breakblock.wav');
 
 	// Store current time
 	this.currentTime = 0
@@ -73,6 +75,19 @@ Scene.prototype.update = function (deltaTime) {
 	if(this.map.flag) this.map.flag.update(deltaTime);
 	this.map.poles.forEach(pole=>{pole.update(deltaTime)});
 
+	// Init music once user has interacted
+	if (interacted)
+	this.music.play();
+
+		// Play jumpSound sound when spacebar pressed
+	if (keyboard[32] && interacted) {
+		if (this.player.state == STATE_MAX || this.player.state == STATE_START_MAX) {
+			this.jumpSoundSuper.play();
+		}
+		if (this.player.state == STATE_MINI || this.player.state == STATE_START_MINI) {
+			this.jumpSound.play();
+		}
+	}
 
 	var cameraWidth = document.getElementById("game-layer").width;
 
@@ -107,14 +122,18 @@ Scene.prototype.update = function (deltaTime) {
 		var colisionBrick = brick.collisionBox().intersectSide(this.player.collisionBox());
 		if (!!colisionBrick) {
 			if (colisionBrick[1] === 'abajo' && this.player.live) {
-				if(this.player.state == STATE_MAX || this.player.state == STATE_START_MAX ){
+				if((this.player.state == STATE_MAX || this.player.state == STATE_START_MAX )&& brick.live){
+					this.breakblock.play();
 					brick.clean();
 				}
 				// this.brick.sprite.y -= 0.5; 
 				brick.bouncing = true;
 				// this.player.sprite.y -= 2
-				if (interacted)
-					this.brickSound.play();
+				if (interacted && brick.live){
+					if (this.player.state == STATE_MINI || this.player.state == STATE_START_MINI) {
+						this.brickSound.play();
+					}
+				}
 			}
 		}
 	});
@@ -205,16 +224,8 @@ Scene.prototype.update = function (deltaTime) {
 			goomba.move = true;
 		}
 
-		// Init music once user has interacted
-		if (interacted)
-			this.music.play();
-
-		// Play jumpSound sound when spacebar pressed
-		if (keyboard[32] && interacted)
-			this.jumpSound.play();
-
 	})
-
+	
 	var colision = this.enemiKoopa.collisionBox().intersectSide(this.player.collisionBox());
 	if (!!colision && this.player.live) {
 		if(this.enemiKoopa.state == LIVE_KOOPA){

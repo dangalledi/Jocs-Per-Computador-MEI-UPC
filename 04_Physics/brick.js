@@ -16,6 +16,7 @@ function Brick(x, y) {
 	this.originalY = y;
 	this.maxBounceHeight = 15; // Change this to the maximum bounce height you want
 	this.bouncing = false;
+	this.live = true;
 }
 
 Brick.prototype.update = function update(deltaTime) {
@@ -48,6 +49,7 @@ Brick.prototype.draw = function draw() {
 
 Brick.prototype.clean = function clean() {
 	this.sprite.setAnimation(1);
+	this.live = false;
 	setTimeout(() => {
 		this.activeView = false;
 	}, 125);
