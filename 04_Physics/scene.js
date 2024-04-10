@@ -20,7 +20,9 @@ function Scene() {//85421
 	this.maxCameraX = 0;
 
 	//enemigos
-	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
+	this.enemiskoopa = [];
+	this.enemiskoopa[0] = new KoopaTroopa(300, 200, this.map);
+	this.enemiskoopa[1] = new KoopaTroopa(200, 200, this.map);
 
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
@@ -59,7 +61,7 @@ Scene.prototype.update = function (deltaTime) {
 	this.listCoinCub.forEach(coin => {coin.update(deltaTime)})
 	
 	//enemigos
-	this.enemiKoopa.update(deltaTime);
+	this.enemiskoopa.forEach(koopa => { koopa.update(deltaTime); });
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });
 	
 	//mapa
@@ -211,38 +213,42 @@ Scene.prototype.update = function (deltaTime) {
 				}
 			}
 		}
-		if(this.enemiKoopa.collisionBox().intersect(goomba.collisionBox()) && this.enemiKoopa.state == DIE_KOOPA ){
-			goomba.die();
-		}
+		this.enemiskoopa.forEach((koopa) =>{
+			if(koopa.collisionBox().intersect(goomba.collisionBox()) && koopa.state == DIE_KOOPA ){
+				goomba.die();
+			}
+		})
 		if (goomba.sprite.x >= this.maxCameraX && goomba.sprite.x <= this.maxCameraX + cameraWidth) {
 			goomba.move = true;
 		}
 
 	})
-	
-	var colision = this.enemiKoopa.collisionBox().intersectSide(this.player.collisionBox());
-	if (!!colision && this.player.live) {
-		if(this.enemiKoopa.state == LIVE_KOOPA){
-			if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
-				this.enemiKoopa.die();
-				this.puntaje= this.puntaje + 100;
-			}else{
-				if (colision[1] === 'arriba') {
-					this.enemiKoopa.die();
-					this.puntaje= this.puntaje + 100;
-				}else if (this.enemiKoopa.active && this.enemiKoopa.move) {
-					this.player.die();
+	this.enemiskoopa.forEach(koopa =>{
+		var colision = koopa.collisionBox().intersectSide(this.player.collisionBox());
+		if (!!colision && this.player.live) {
+			if(koopa.state == LIVE_KOOPA){
+				if(this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX){
+					koopa.die();
+					puntaje= puntaje + 100;
+				}else{
+					if (colision[1] === 'arriba') {
+						koopa.die();
+						puntaje= puntaje + 100;
+					}else if (koopa.active && koopa.move) {
+						this.player.die();
+					}
 				}
+			}else if(!koopa.move){
+				koopa.direction = colision[2] == 'derecha'? 'right': 'left';
+				koopa.move= true;
+				
+			}else{
+				if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  koopa.move = false;
+				else{ this.player.die()}
 			}
-		}else if(!this.enemiKoopa.move){
-			this.enemiKoopa.direction = colision[2] == 'derecha'? 'right': 'left';
-			this.enemiKoopa.move= true;
-			
-		}else{
-			if (colision[1] === 'arriba' || this.player.state == STATE_START_MINI || this.player.state == STATE_START_MAX)  this.enemiKoopa.move = false;
-			else{ this.player.die()}
 		}
-	}
+	})
+	
 	this.map.poles.forEach((pole, index)=>{
 		if(pole.collisionBox().intersect(this.player.collisionBox())){
 			this.player.movePlayer = false;
@@ -310,7 +316,7 @@ Scene.prototype.draw = function () {
 	this.listHongoMax.forEach(hongoMax => { hongoMax.draw(); });
 	this.listCoinCub.forEach(coin => {coin.draw()})
 	//enemigos
-	this.enemiKoopa.draw();
+	this.enemiskoopa.forEach((koopa)=>{koopa.draw()});
 	this.enemisGommba.forEach(goomba => {goomba.draw();})
 	//plyer
 	this.player.draw();
