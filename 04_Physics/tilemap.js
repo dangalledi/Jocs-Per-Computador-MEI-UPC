@@ -13,7 +13,7 @@ function Tilemap(tilesheet, tileSize, blockGrid, basePos, map)
 	this.interrogation = [];
 	this.coin = [];
 	this.poles = [];
-	this.flag;
+	this.flag = null;
 }
 
 Tilemap.prototype.draw = function ()
@@ -81,7 +81,7 @@ Tilemap.prototype.draw = function ()
 	this.bricks.forEach(brick => { brick.draw(); });
 	this.interrogation.forEach(interrogation => { interrogation.draw(); });
 	this.coin.forEach(coin => { if (coin.active) coin.draw(); });
-	this.flag.draw();
+	if(this.flag) this.flag.draw();
 	this.poles.forEach((pole)=>{pole.draw()});
 }
 

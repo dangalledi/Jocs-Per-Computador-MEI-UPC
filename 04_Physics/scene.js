@@ -55,11 +55,13 @@ Scene.prototype.update = function (deltaTime) {
 
 	// Update entities
 	this.player.update(deltaTime);
+
 	//poweUp
 	this.listStar.forEach(star => { star.update(deltaTime); });
 	this.listHongoUp.forEach(hongoUp => { hongoUp.update(deltaTime); });
 	this.listHongoMax.forEach(hongoMax => { hongoMax.update(deltaTime); });
 	this.listCoinCub.forEach(coin => {coin.update(deltaTime)})
+	
 	//enemigos
 	this.enemiKoopa.update(deltaTime);
 	this.enemisGommba.forEach(goomba => { goomba.update(deltaTime); });

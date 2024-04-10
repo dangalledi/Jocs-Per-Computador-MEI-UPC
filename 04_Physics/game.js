@@ -5,11 +5,20 @@ const FRAME_RATE = 60;
 const TIME_PER_FRAME = 1000 / FRAME_RATE;
 const TIMEOUT = 200;
 
-var scene = new Scene(3);
+var escena_actual = 0
+
+const ESCENA_PRINCIPAL = 0;
+const ESCENA_LEVEL01 = 1;
+const ESCENA_LEVEL02 = 2;
+
+var scene = new Scene(3);//no se si dejarlo inicialmenre null
 var previousTimestamp;
 var keyboard = [];
+var xClick,yClick;
 var interacted;
 var isPaused = false;
+
+var sceneMenu = new SceneMenu();
 // Control keyboard events
 
 
@@ -18,10 +27,21 @@ function keyDown(keycode)
 	if(keycode.which >= 0 && keycode.which < 256)
 		keyboard[keycode.which] = true;
 
-	if(keycode.which === 80) {
+	if(keycode.which === 80) {//p
 		// Toggle the pause state
 		isPaused = !isPaused;
 	}
+	if(keycode.which === 49) {//1
+		escena_actual= ESCENA_PRINCIPAL
+	}
+	if(keycode.which === 50) {// 2
+		goToLevel01();
+	}
+}
+
+function goToLevel01(){
+	escena_actual= ESCENA_LEVEL01;
+	scene = new Scene(3);
 }
 
 function keyUp(keycode)
@@ -30,9 +50,11 @@ function keyUp(keycode)
 		keyboard[keycode.which] = false;
 }
 
-function click()
+function click(event)
 {
 	interacted = true;
+	xClick = event.clientX; // Coordenada X del clic
+    yClick = event.clientY; // Coordenada Y del clic
 }
 
 // Initialization
@@ -52,18 +74,37 @@ function init()
 function frameUpdate(timestamp){
 	var bUpdated = false;
 	var deltaTime = timestamp - previousTimestamp;
-	
-
 	while(deltaTime > TIME_PER_FRAME) {
 		bUpdated = true;
-		if (!isPaused) scene.update(TIME_PER_FRAME);
+		if (!isPaused) {
+			switch (escena_actual) {
+				case ESCENA_PRINCIPAL:
+					sceneMenu.update(TIME_PER_FRAME);
+					break;
+				case ESCENA_LEVEL01:
+					scene.update(TIME_PER_FRAME);
+					break;
+				default:
+					sceneMenu.update(TIME_PER_FRAME);
+					break;
+			}
+		}
 		previousTimestamp += TIME_PER_FRAME;
 		deltaTime = timestamp - previousTimestamp;
 	}
-	if(bUpdated)
-		scene.draw();
-
-
+	if(bUpdated){
+		switch (escena_actual) {
+			case ESCENA_PRINCIPAL:
+				sceneMenu.draw();
+				break;
+			case ESCENA_LEVEL01:
+				scene.draw();
+				break;
+			default:
+				sceneMenu.draw();
+				break;
+		}
+	}
     window.requestAnimationFrame(frameUpdate)
 }
 
@@ -87,7 +128,17 @@ function restartGame(lives) {
 	if(lives==0){
 		pauseGame()
 	}else{
-		scene = new Scene(lives);
+		switch (escena_actual) {
+			case ESCENA_PRINCIPAL:
+				sceneMenu = new SceneMenu();
+				break;
+			case ESCENA_LEVEL01:
+				scene = new Scene(lives);
+				break;
+			default:
+				sceneMenu = new SceneMenu();
+				break;
+		}
 		isPaused = false;
 		init();
 		frameUpdate(previousTimestamp);
