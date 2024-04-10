@@ -24,6 +24,8 @@ function Quad(x, y, width, height, color = "white", text='', funcion)
 Quad.prototype.update = function(deltaTime){
 	if(this.ymin<yClick && this.ymax>yClick && this.xmin<xClick && this.xmax>xClick){
 		this.funcion();
+		yClick=0;
+		xClick=0;
 	}
 	
 }
