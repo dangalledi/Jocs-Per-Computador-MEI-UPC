@@ -19,6 +19,7 @@ const ESCENA_PRINCIPAL = 0;
 const INTRUCCIONES =1;
 const ESCENA_LEVEL01 = 2;
 const ESCENA_LEVEL02 = 3;
+const ESCENA_CREDITOS = 4;
 
 var escena_actual = 0
 
@@ -33,6 +34,7 @@ var sceneMenu = new SceneMenu();
 var scene = new Scene(3);//no se si dejarlo inicialmenre null
 var scene2 = new Scene2(3);//no se si dejarlo inicialmenre null
 var intrucciones = new Intrucciones();
+var creditos = new Creditos();
 // Control keyboard events
 
 
@@ -55,7 +57,7 @@ function keyDown(keycode)
 
 function goToLevel01(){
 	escena_actual= ESCENA_LEVEL01;
-	scene = new Scene(3);
+	scene = new Scene2(3);
 }
 
 function goToLevel02(){
@@ -70,6 +72,11 @@ function goToIntrucciones(){
 
 function goToMenu(){
 	escena_actual= ESCENA_PRINCIPAL;
+	//sceneMenu = new SceneMenu();
+}
+
+function goToCreditos(){
+	escena_actual= ESCENA_CREDITOS;
 	//sceneMenu = new SceneMenu();
 }
 
@@ -121,6 +128,9 @@ function frameUpdate(timestamp){
 				case ESCENA_LEVEL02:
 					scene2.update(TIME_PER_FRAME);
 					break;
+				case ESCENA_CREDITOS:
+					creditos.update(TIME_PER_FRAME);
+					break;
 				default:
 					sceneMenu.update(TIME_PER_FRAME);
 					break;
@@ -142,6 +152,9 @@ function frameUpdate(timestamp){
 				break;
 			case ESCENA_LEVEL02:
 				scene2.draw();
+				break;
+			case ESCENA_CREDITOS:
+				creditos.draw();
 				break;
 			default:
 				sceneMenu.draw();
@@ -176,13 +189,16 @@ function restartGame(lives) {
 				sceneMenu = new SceneMenu();
 				break;
 			case ESCENA_LEVEL01:
-				scene = new Scene(lives);
+				scene = new Scene2(lives);
 				break;
 			case ESCENA_LEVEL02:
 				scene2 = new Scene2(lives);
 				break;
 			case INTRUCCIONES:
 				intrucciones = new Intrucciones();
+				break
+			case ESCENA_CREDITOS:
+				intrucciones = new Creditos();
 				break
 			default:
 				sceneMenu = new SceneMenu();

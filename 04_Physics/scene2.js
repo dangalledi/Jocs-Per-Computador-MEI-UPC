@@ -1,4 +1,3 @@
-
 // Scene. Updates and draws a single scene of the game.
 function Scene2(lives) {//85421
 	// Loading texture to use in a TileMap
@@ -15,14 +14,14 @@ function Scene2(lives) {//85421
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 9], [0, 0], this.level);
 
 	// Create entities
-	this.player = new Player(224, 352, this.map, lives);
+	this.player = new Player(128, 352, this.map, lives);
 
 
 	//max Camara
 	this.maxCameraX = 0;
 
 	//enemigos
-	this.enemiKoopa = new KoopaTroopa(300, 200, this.map);
+	this.enemiKoopa = new KoopaTroopa(58, 260, this.map);
 
 	this.enemisGommba = [];
 	this.enemisGommba[0] = new Goomba(512, 352, this.map);
@@ -272,7 +271,7 @@ Scene2.prototype.update = function (deltaTime) {
 		}else{
 			this.player.moveRigth = false;
 			restartDatosJuego();
-			goToMenu();//FIN ESCENA.
+			goToCreditos();
 		}
 	}
 	if((this.currentTime / 1000)> TIMEOUT  && this.player.live){
