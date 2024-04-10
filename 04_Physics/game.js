@@ -5,20 +5,23 @@ const FRAME_RATE = 60;
 const TIME_PER_FRAME = 1000 / FRAME_RATE;
 const TIMEOUT = 200;
 
-var escena_actual = 0
-
 const ESCENA_PRINCIPAL = 0;
-const ESCENA_LEVEL01 = 1;
-const ESCENA_LEVEL02 = 2;
+const INTRUCCIONES =1;
+const ESCENA_LEVEL01 = 2;
+const ESCENA_LEVEL02 = 3;
+
+var escena_actual = 0
 
 var scene = new Scene(3);//no se si dejarlo inicialmenre null
 var previousTimestamp;
 var keyboard = [];
-var xClick,yClick;
+var xClick;
+var yClick;
 var interacted;
 var isPaused = false;
 
 var sceneMenu = new SceneMenu();
+var intrucciones = new Intrucciones();
 // Control keyboard events
 
 
@@ -44,6 +47,16 @@ function goToLevel01(){
 	scene = new Scene(3);
 }
 
+function goToIntrucciones(){
+	escena_actual= INTRUCCIONES;
+	//intrucciones = new Intrucciones();
+}
+
+function goToMenu(){
+	escena_actual= ESCENA_PRINCIPAL;
+	//sceneMenu = new SceneMenu();
+}
+
 function keyUp(keycode)
 {
 	if(keycode.which >= 0 && keycode.which < 256)
@@ -52,9 +65,11 @@ function keyUp(keycode)
 
 function click(event)
 {
+	var canvas = document.getElementById("game-layer");
+	var rect = canvas.getBoundingClientRect(); // Obtiene la posición del canvas
+    xClick = event.clientX - rect.left; // Coordenada X del clic en el canvas
+    yClick = event.clientY - rect.top - 32; // Coordenada Y del clic en el canvas
 	interacted = true;
-	xClick = event.clientX; // Coordenada X del clic
-    yClick = event.clientY; // Coordenada Y del clic
 }
 
 // Initialization
@@ -81,6 +96,9 @@ function frameUpdate(timestamp){
 				case ESCENA_PRINCIPAL:
 					sceneMenu.update(TIME_PER_FRAME);
 					break;
+				case INTRUCCIONES:
+					intrucciones.update(TIME_PER_FRAME);
+					break
 				case ESCENA_LEVEL01:
 					scene.update(TIME_PER_FRAME);
 					break;
@@ -97,6 +115,9 @@ function frameUpdate(timestamp){
 			case ESCENA_PRINCIPAL:
 				sceneMenu.draw();
 				break;
+			case INTRUCCIONES:
+				intrucciones.draw();
+				break
 			case ESCENA_LEVEL01:
 				scene.draw();
 				break;
@@ -135,6 +156,9 @@ function restartGame(lives) {
 			case ESCENA_LEVEL01:
 				scene = new Scene(lives);
 				break;
+			case INTRUCCIONES:
+				intrucciones = new Intrucciones();
+				break
 			default:
 				sceneMenu = new SceneMenu();
 				break;

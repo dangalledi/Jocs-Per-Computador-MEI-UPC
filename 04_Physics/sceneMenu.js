@@ -8,8 +8,8 @@ function SceneMenu() {
 	this.map = new Tilemap(tilesheet, [32, 32], [4, 9], [0, 0], this.level);
     
     this.quads = new Array();
-	this.quads.push(new Quad(256-128/2, 246, 128, 32, "white","Inicio Juego",goToLevel01()));
-	this.quads.push(new Quad(256-128/2, 280, 128, 32, "white","Intrucciones",goToLevel01()));
+	this.quads.push(new Quad(256-128/2, 246, 128, 32, "white","Inicio Juego",goToLevel01));
+	this.quads.push(new Quad(256-128/2, 280, 128, 32, "white","Intrucciones",goToIntrucciones));
 
     // Store current time
     this.currentTime = 0
@@ -21,6 +21,8 @@ function SceneMenu() {
 SceneMenu.prototype.update = function (deltaTime) {
 // Keep track of time
     this.currentTime += deltaTime;
+    this.quads.forEach(qa =>{qa.update(deltaTime)});
+
 }
 
 SceneMenu.prototype.draw = function () {
