@@ -31,8 +31,3 @@ git clone <URL_del_repositorio>
 ```
 
 2. Abre el archivo `index.html` en cualquier navegador web moderno.
-
-## Licencia
-
-Este proyecto es educativo y se distribuye bajo licencia MIT.
-
